@@ -748,9 +748,8 @@
     }
 
     .creative-img--book {
-      object-fit: contain;
-      background: linear-gradient(135deg, #f5f0eb 0%, #e8e2da 100%);
-      padding: 0.5rem 0;
+      object-fit: cover;
+      object-position: center 20%;
     }
 
     .creative-body {
@@ -1420,8 +1419,7 @@
         cols = Math.ceil(w / SCALE) + 1;
         rows = Math.ceil(h / SCALE) + 1;
         // clear trails on resize
-        ctx.fillStyle = 'rgba(255,255,255,1)';
-        ctx.fillRect(0, 0, w, h);
+        ctx.clearRect(0, 0, w, h);
       }
       resize();
       window.addEventListener('resize', resize);
@@ -1460,14 +1458,13 @@
       }
 
       // --- Animation ---
-      // Initial fill
-      ctx.fillStyle = 'rgba(250,250,250,1)';
-      ctx.fillRect(0, 0, w, h);
-
       function animate() {
-        // soft fade: overlay background with low alpha to create trails
-        ctx.fillStyle = 'rgba(250, 250, 250, 0.035)';
+        // true fade: destination-out removes opacity so trails fully vanish
+        // no ghost traces (canvas becomes transparent, hero bg shows through)
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.025)';
         ctx.fillRect(0, 0, w, h);
+        ctx.globalCompositeOperation = 'source-over';
 
         time += 0.002;
 
