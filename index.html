@@ -1357,132 +1357,192 @@
 
   <script>
     /* ============================================
-       CONSTELLATION NETWORK
+       FLOW FIELD (Perlin Noise)
        ============================================ */
-    (function initConstellation() {
+    (function initFlowField() {
       var canvas = document.getElementById('constellation');
       var ctx = canvas.getContext('2d');
       var hero = canvas.parentElement;
-      var mouse = { x: -9999, y: -9999 };
-      var colors = [
-        { r: 0, g: 188, b: 212 },
-        { r: 233, g: 30, b: 99 },
-        { r: 255, g: 193, b: 7 },
-        { r: 255, g: 107, b: 53 },
-        { r: 124, g: 77, b: 255 }
+      var mouse = { x: -9999, y: -9999, active: false };
+      var MOUSE_RADIUS = 200;
+
+      // brand palette with RGB
+      var palette = [
+        { r: 0, g: 188, b: 212 },     // cyan
+        { r: 233, g: 30, b: 99 },      // magenta
+        { r: 255, g: 193, b: 7 },      // yellow
+        { r: 255, g: 107, b: 53 },     // orange
+        { r: 124, g: 77, b: 255 }      // purple
       ];
-      var PARTICLE_COUNT = 70;
-      var CONNECT_DIST = 130;
-      var MOUSE_RADIUS = 180;
+
+      // --- Simplex-inspired noise (fast 2D) ---
+      var PERM = new Uint8Array(512);
+      (function seedPerm() {
+        var p = [];
+        for (var i = 0; i < 256; i++) p[i] = i;
+        for (var i = 255; i > 0; i--) {
+          var j = Math.floor(Math.random() * (i + 1));
+          var tmp = p[i]; p[i] = p[j]; p[j] = tmp;
+        }
+        for (var i = 0; i < 512; i++) PERM[i] = p[i & 255];
+      })();
+
+      var GRAD = [[1,1],[-1,1],[1,-1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+      function dot2(g, x, y) { return g[0]*x + g[1]*y; }
+      function fade(t) { return t*t*t*(t*(t*6-15)+10); }
+      function lerp(a, b, t) { return a + t*(b - a); }
+
+      function noise2D(x, y) {
+        var X = Math.floor(x) & 255, Y = Math.floor(y) & 255;
+        x -= Math.floor(x); y -= Math.floor(y);
+        var u = fade(x), v = fade(y);
+        var aa = PERM[PERM[X] + Y], ab = PERM[PERM[X] + Y + 1];
+        var ba = PERM[PERM[X + 1] + Y], bb = PERM[PERM[X + 1] + Y + 1];
+        return lerp(
+          lerp(dot2(GRAD[aa & 7], x, y), dot2(GRAD[ba & 7], x-1, y), u),
+          lerp(dot2(GRAD[ab & 7], x, y-1), dot2(GRAD[bb & 7], x-1, y-1), u),
+          v
+        );
+      }
+
+      // --- Canvas setup ---
+      var w, h, cols, rows;
+      var SCALE = 20;
+      var PARTICLE_COUNT = 500;
       var particles = [];
+      var time = 0;
 
       function resize() {
-        canvas.width = hero.offsetWidth;
-        canvas.height = hero.offsetHeight;
+        w = hero.offsetWidth;
+        h = hero.offsetHeight;
+        canvas.width = w;
+        canvas.height = h;
+        cols = Math.ceil(w / SCALE) + 1;
+        rows = Math.ceil(h / SCALE) + 1;
+        // clear trails on resize
+        ctx.fillStyle = 'rgba(255,255,255,1)';
+        ctx.fillRect(0, 0, w, h);
       }
       resize();
       window.addEventListener('resize', resize);
 
+      // --- Mouse ---
       hero.style.pointerEvents = 'auto';
       hero.addEventListener('mousemove', function(e) {
         var rect = hero.getBoundingClientRect();
         mouse.x = e.clientX - rect.left;
         mouse.y = e.clientY - rect.top;
+        mouse.active = true;
       });
       hero.addEventListener('mouseleave', function() {
-        mouse.x = -9999;
-        mouse.y = -9999;
+        mouse.active = false;
       });
 
-      for (var i = 0; i < PARTICLE_COUNT; i++) {
-        var c = colors[Math.floor(Math.random() * colors.length)];
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.4,
-          vy: (Math.random() - 0.5) * 0.4,
-          radius: 1.5 + Math.random() * 2.5,
+      // --- Create particles ---
+      function makeParticle() {
+        var c = palette[Math.floor(Math.random() * palette.length)];
+        return {
+          x: Math.random() * w,
+          y: Math.random() * h,
+          prevX: 0, prevY: 0,
+          speed: 0.8 + Math.random() * 1.2,
           color: c,
-          baseAlpha: 0.3 + Math.random() * 0.4,
-          pulse: Math.random() * Math.PI * 2
-        });
+          alpha: 0.12 + Math.random() * 0.2,
+          life: 0,
+          maxLife: 300 + Math.floor(Math.random() * 400)
+        };
       }
 
+      for (var i = 0; i < PARTICLE_COUNT; i++) {
+        var p = makeParticle();
+        p.life = Math.floor(Math.random() * p.maxLife); // stagger
+        particles.push(p);
+      }
+
+      // --- Animation ---
+      // Initial fill
+      ctx.fillStyle = 'rgba(250,250,250,1)';
+      ctx.fillRect(0, 0, w, h);
+
       function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        var w = canvas.width;
-        var h = canvas.height;
+        // soft fade: overlay background with low alpha to create trails
+        ctx.fillStyle = 'rgba(250, 250, 250, 0.035)';
+        ctx.fillRect(0, 0, w, h);
+
+        time += 0.002;
 
         for (var i = 0; i < particles.length; i++) {
           var p = particles[i];
-          p.pulse += 0.008;
-          var alpha = p.baseAlpha + Math.sin(p.pulse) * 0.15;
+          p.prevX = p.x;
+          p.prevY = p.y;
 
-          // mouse interaction: gentle push
-          var dx = p.x - mouse.x;
-          var dy = p.y - mouse.y;
-          var dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < MOUSE_RADIUS && dist > 0) {
-            var force = (MOUSE_RADIUS - dist) / MOUSE_RADIUS * 0.6;
-            p.vx += (dx / dist) * force * 0.3;
-            p.vy += (dy / dist) * force * 0.3;
-            alpha = Math.min(alpha + 0.2, 0.9);
-          }
+          // flow field angle from noise
+          var noiseVal = noise2D(p.x * 0.003, p.y * 0.003 + time);
+          var angle = noiseVal * Math.PI * 4;
 
-          // damping
-          p.vx *= 0.995;
-          p.vy *= 0.995;
+          // secondary noise layer for turbulence
+          var turb = noise2D(p.x * 0.008 + 100, p.y * 0.008 + time * 1.5);
+          angle += turb * Math.PI * 0.8;
 
-          // base drift speed floor
-          var speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-          if (speed < 0.15) {
-            p.vx += (Math.random() - 0.5) * 0.05;
-            p.vy += (Math.random() - 0.5) * 0.05;
-          }
+          var vx = Math.cos(angle) * p.speed;
+          var vy = Math.sin(angle) * p.speed;
 
-          p.x += p.vx;
-          p.y += p.vy;
-
-          // wrap edges
-          if (p.x < -10) p.x = w + 10;
-          if (p.x > w + 10) p.x = -10;
-          if (p.y < -10) p.y = h + 10;
-          if (p.y > h + 10) p.y = -10;
-
-          // draw particle
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(' + p.color.r + ',' + p.color.g + ',' + p.color.b + ',' + alpha + ')';
-          ctx.fill();
-
-          // connections to nearby particles
-          for (var j = i + 1; j < particles.length; j++) {
-            var p2 = particles[j];
-            var cdx = p.x - p2.x;
-            var cdy = p.y - p2.y;
-            var cdist = Math.sqrt(cdx * cdx + cdy * cdy);
-            if (cdist < CONNECT_DIST) {
-              var lineAlpha = (1 - cdist / CONNECT_DIST) * 0.15;
-              // brighter near mouse
-              var midX = (p.x + p2.x) / 2;
-              var midY = (p.y + p2.y) / 2;
-              var mDist = Math.sqrt((midX - mouse.x) * (midX - mouse.x) + (midY - mouse.y) * (midY - mouse.y));
-              if (mDist < MOUSE_RADIUS) {
-                lineAlpha += (1 - mDist / MOUSE_RADIUS) * 0.12;
-              }
-              // blend both particle colors
-              var cr = Math.round((p.color.r + p2.color.r) / 2);
-              var cg = Math.round((p.color.g + p2.color.g) / 2);
-              var cb = Math.round((p.color.b + p2.color.b) / 2);
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.strokeStyle = 'rgba(' + cr + ',' + cg + ',' + cb + ',' + lineAlpha + ')';
-              ctx.lineWidth = 0.8;
-              ctx.stroke();
+          // mouse disturbance: swirl around cursor
+          if (mouse.active) {
+            var dx = p.x - mouse.x;
+            var dy = p.y - mouse.y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < MOUSE_RADIUS && dist > 1) {
+              var influence = (1 - dist / MOUSE_RADIUS);
+              influence = influence * influence; // quadratic falloff
+              // tangential swirl + slight repulsion
+              vx += (-dy / dist * 3 + dx / dist * 0.5) * influence;
+              vy += (dx / dist * 3 + dy / dist * 0.5) * influence;
             }
           }
+
+          p.x += vx;
+          p.y += vy;
+          p.life++;
+
+          // respawn if out of bounds or life expired
+          if (p.x < -10 || p.x > w + 10 || p.y < -10 || p.y > h + 10 || p.life > p.maxLife) {
+            var np = makeParticle();
+            particles[i] = np;
+            np.prevX = np.x;
+            np.prevY = np.y;
+            continue;
+          }
+
+          // draw trail line
+          var lifeRatio = p.life / p.maxLife;
+          // fade in at start, fade out at end
+          var fadeAlpha = lifeRatio < 0.05 ? lifeRatio / 0.05 :
+                          lifeRatio > 0.85 ? (1 - lifeRatio) / 0.15 : 1;
+          var drawAlpha = p.alpha * fadeAlpha;
+
+          // thicker near mouse
+          var lineW = 1;
+          if (mouse.active) {
+            var mdx = p.x - mouse.x;
+            var mdy = p.y - mouse.y;
+            var mDist = Math.sqrt(mdx * mdx + mdy * mdy);
+            if (mDist < MOUSE_RADIUS) {
+              var boost = (1 - mDist / MOUSE_RADIUS);
+              lineW += boost * 1.5;
+              drawAlpha = Math.min(drawAlpha + boost * 0.15, 0.6);
+            }
+          }
+
+          ctx.beginPath();
+          ctx.moveTo(p.prevX, p.prevY);
+          ctx.lineTo(p.x, p.y);
+          ctx.strokeStyle = 'rgba(' + p.color.r + ',' + p.color.g + ',' + p.color.b + ',' + drawAlpha + ')';
+          ctx.lineWidth = lineW;
+          ctx.lineCap = 'round';
+          ctx.stroke();
         }
+
         requestAnimationFrame(animate);
       }
       animate();
