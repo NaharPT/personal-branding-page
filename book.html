@@ -799,14 +799,8 @@
           </ul>
         </div>
 
-        <form class="signup-form" id="signupForm">
-          <div class="form-row">
-            <input type="text" name="name" placeholder="Your first name" required class="form-input">
-            <input type="email" name="email" placeholder="Your email" required class="form-input">
-          </div>
-          <button type="submit" class="btn btn-primary">Send Me the Toolkit</button>
-          <p class="privacy-note">No spam. One welcome email, then weekly insights. Unsubscribe anytime.</p>
-        </form>
+        <script async data-uid="f4f5b99123" src="https://nuno-valerio.kit.com/f4f5b99123/index.js"></script>
+        <p class="privacy-note">No spam. One welcome email, then weekly insights. Unsubscribe anytime.</p>
       </div>
     </section>
   </div>
@@ -891,30 +885,7 @@
       });
     });
 
-    /* ============================================
-       SIGNUP FORM HANDLER
-       TODO: Replace with Beehiiv integration
-       ============================================ */
-    const signupForm = document.getElementById('signupForm');
-    signupForm.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      const name = signupForm.querySelector('[name="name"]').value;
-      const email = signupForm.querySelector('[name="email"]').value;
-
-      // Store in localStorage as backup
-      const signups = JSON.parse(localStorage.getItem('book_funnel_signups') || '[]');
-      signups.push({
-        name: name,
-        email: email,
-        timestamp: new Date().toISOString()
-      });
-      localStorage.setItem('book_funnel_signups', JSON.stringify(signups));
-
-      // Show success message
-      const formContainer = signupForm.parentElement;
-      formContainer.innerHTML = '<div class="form-success">Success! Check your email for the IOS Quick-Start Kit. (Beehiiv integration pending)</div>';
-    });
+    /* Kit form is handled by the embedded script */
   </script>
 
 </body>
