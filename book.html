@@ -212,47 +212,11 @@
       position: relative;
     }
 
-    .book-cover-placeholder {
+    .book-cover-img {
       width: 100%;
       max-width: 400px;
-      aspect-ratio: 3/4;
-      background: linear-gradient(135deg, var(--cyan) 0%, var(--purple) 50%, var(--magenta) 100%);
       border-radius: var(--radius);
       box-shadow: var(--shadow-xl);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 3rem;
-      color: white;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .book-cover-placeholder::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="50" r="30" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="50" r="20" fill="rgba(255,255,255,0.05)"/></svg>');
-      opacity: 0.3;
-    }
-
-    .book-cover-placeholder h2 {
-      font-size: 2.2rem;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 1rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .book-cover-placeholder .subtitle {
-      font-size: 0.9rem;
-      font-weight: 400;
-      text-align: center;
-      opacity: 0.9;
-      position: relative;
-      z-index: 1;
     }
 
     .btn {
@@ -755,10 +719,7 @@
         <a href="#signup" class="btn btn-primary">Get Your Free IOS Quick-Start Kit</a>
       </div>
       <div class="hero-book-cover">
-        <div class="book-cover-placeholder">
-          <h2>The Council of Selves</h2>
-          <p class="subtitle">An Identity Operating System</p>
-        </div>
+        <img src="book-cover.png" alt="The Council of Selves - Book Cover" class="book-cover-img">
       </div>
     </div>
   </header>
