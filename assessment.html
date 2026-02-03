@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Council of Selves Assessment | Nuno Val&#233;rio</title>
+<meta name="description" content="Map your Identity Operating System. An interactive self-assessment based on The Council of Selves by Nuno Val&#233;rio.">
+<meta property="og:title" content="Council of Selves Assessment">
+<meta property="og:description" content="Map your inner Council, Waves, Compass, and Chair. A 7-step interactive self-assessment based on the Identity Operating System.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://nunovalerio.com/assessment">
+<link rel="canonical" href="https://nunovalerio.com/assessment">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a1a;--bg2:#0f0f2a;--card:rgba(20,20,40,0.6);--card-hover:rgba(25,25,50,0.8);
+  --gold:#D4AF37;--gold-dim:rgba(212,175,55,0.15);--gold-border:rgba(212,175,55,0.25);
+  --teal:#2DD4BF;--teal-dim:rgba(45,212,191,0.15);
+  --rose:#F472B6;--rose-dim:rgba(244,114,182,0.15);--rose-border:rgba(244,114,182,0.25);
+  --purple:#7C4DFF;--purple-dim:rgba(124,77,255,0.15);
+  --blue:#60A5FA;--blue-dim:rgba(96,165,250,0.15);
+  --amber:#FBBF24;--amber-dim:rgba(251,191,36,0.15);
+  --text:#e8e8f0;--text2:#a0a0b8;--text3:#6e6e82;
+  --border:rgba(212,175,55,0.2);--radius:12px;--radius-sm:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Space Grotesk',sans-serif;color:var(--gold);font-weight:700}
+h1{font-size:2.4em;letter-spacing:-0.02em;line-height:1.15}
+h2{font-size:1.6em;margin-bottom:.3em}
+h3{font-size:1.2em;color:var(--teal)}
+::selection{background:rgba(212,175,55,0.3);color:#fff}
+
+/* Layout */
+.app{max-width:800px;margin:0 auto;padding:1.5rem;min-height:100vh}
+.screen{display:none;animation:fadeIn .4s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* Progress */
+.progress-bar{display:flex;gap:6px;margin-bottom:2rem;padding:0 .5rem}
+.progress-bar .step{flex:1;height:4px;border-radius:2px;background:rgba(255,255,255,0.08);transition:.3s}
+.progress-bar .step.done{background:var(--gold)}
+.progress-bar .step.current{background:var(--teal)}
+.step-label{text-align:center;color:var(--text3);font-size:.8rem;margin-bottom:1.5rem}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;transition:.3s}
+.card:hover{background:var(--card-hover);border-color:rgba(212,175,55,0.35)}
+.card.shadow-card{border-color:var(--rose-border)}
+.card.shadow-card:hover{border-color:rgba(244,114,182,0.4)}
+.card-header{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.card-icon{font-size:1.5em;width:40px;text-align:center}
+.card-title{font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--gold);font-size:1.05em}
+.card-desc{color:var(--text2);font-size:.88rem;margin-bottom:1rem;line-height:1.5}
+
+/* Sliders */
+.slider-group{margin-bottom:1rem}
+.slider-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:.4rem}
+.slider-label span{font-size:.82rem;color:var(--text2)}
+.slider-label .val{color:var(--teal);font-weight:600;font-size:.95rem;min-width:1.5em;text-align:right}
+.slider-question{font-size:.8rem;color:var(--text3);margin-bottom:.5rem;font-style:italic}
+input[type=range]{-webkit-appearance:none;width:100%;height:6px;border-radius:3px;background:rgba(255,255,255,0.08);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--teal);border:2px solid rgba(255,255,255,0.2);cursor:pointer;transition:.2s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15);box-shadow:0 0 12px rgba(45,212,191,0.4)}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--teal);border:2px solid rgba(255,255,255,0.2);cursor:pointer}
+input[type=range].rose-slider::-webkit-slider-thumb{background:var(--rose)}
+input[type=range].rose-slider::-moz-range-thumb{background:var(--rose)}
+.slider-ends{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text3);margin-top:.2rem}
+
+/* Compass slider special */
+input[type=range].compass-slider{background:linear-gradient(90deg,var(--rose-dim) 0%,rgba(255,255,255,0.06) 50%,var(--teal-dim) 100%)}
+
+/* Wave cards */
+.wave-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:1.5rem}
+.wave-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;cursor:pointer;transition:.3s;text-align:center}
+.wave-card:hover{transform:translateY(-2px)}
+.wave-card.selected{border-width:2px;transform:translateY(-2px)}
+.wave-card.rt{--wc:var(--teal)}.wave-card.rt.selected{border-color:var(--teal);background:var(--teal-dim)}
+.wave-card.st{--wc:var(--amber)}.wave-card.st.selected{border-color:var(--amber);background:var(--amber-dim)}
+.wave-card.lt{--wc:var(--blue)}.wave-card.lt.selected{border-color:var(--blue);background:var(--blue-dim)}
+.wave-card.ut{--wc:var(--rose)}.wave-card.ut.selected{border-color:var(--rose);background:var(--rose-dim)}
+.wave-card .wave-icon{font-size:2em;margin-bottom:.4rem}
+.wave-card .wave-name{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.95rem;color:var(--wc,var(--text))}
+.wave-card .wave-desc{font-size:.78rem;color:var(--text3);margin-top:.3rem}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.75rem;border:none;border-radius:var(--radius-sm);font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;transition:.3s;text-decoration:none}
+.btn-primary{background:var(--gold);color:#0a0a1a}.btn-primary:hover{background:#e6c43f;transform:translateY(-1px)}
+.btn-secondary{background:transparent;border:1px solid var(--border);color:var(--text)}.btn-secondary:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm{padding:.5rem 1rem;font-size:.85rem}
+.nav-buttons{display:flex;justify-content:space-between;margin-top:2rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.06)}
+
+/* Results */
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem}
+.result-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem}
+.result-card.full{grid-column:1/-1}
+canvas{width:100%;max-width:400px;margin:0 auto;display:block}
+.shadow-bar{margin-bottom:.75rem}
+.shadow-bar-label{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.3rem}
+.shadow-bar-track{height:8px;border-radius:4px;background:rgba(255,255,255,0.06);overflow:hidden}
+.shadow-bar-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--rose),#E879A8);transition:.5s}
+.compass-viz{position:relative;width:280px;height:280px;margin:0 auto}
+.compass-axis{position:absolute;background:rgba(255,255,255,0.08)}
+.compass-axis.v{width:1px;height:100%;left:50%;top:0}
+.compass-axis.h{height:1px;width:100%;top:50%;left:0}
+.compass-label{position:absolute;font-family:'Space Grotesk',sans-serif;font-size:.8rem;font-weight:600}
+.compass-label.n{top:0;left:50%;transform:translateX(-50%);color:var(--gold)}
+.compass-label.s{bottom:0;left:50%;transform:translateX(-50%);color:var(--rose)}
+.compass-label.e{right:0;top:50%;transform:translateY(-50%);color:var(--teal)}
+.compass-label.w{left:0;top:50%;transform:translateY(-50%);color:var(--purple)}
+.compass-dot{position:absolute;width:12px;height:12px;border-radius:50%;transform:translate(-50%,-50%);transition:.5s}
+.compass-total{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.compass-total .num{font-family:'Space Grotesk',sans-serif;font-size:1.8em;font-weight:700}
+.veto-badge{display:inline-block;background:var(--rose);color:#fff;font-size:.7rem;font-weight:600;padding:.15rem .5rem;border-radius:4px;margin-left:.3rem}
+.align-badge{display:inline-block;background:var(--teal);color:#0a0a1a;font-size:.7rem;font-weight:600;padding:.15rem .5rem;border-radius:4px;margin-left:.3rem}
+.chair-ring{position:relative;width:140px;height:140px;margin:0 auto 1rem}
+.chair-ring canvas{width:140px;height:140px}
+.chair-pct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Space Grotesk',sans-serif;font-size:1.6em;font-weight:700;color:var(--teal)}
+.chair-dims{list-style:none;padding:0}
+.chair-dims li{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:.88rem}
+.chair-dims li span:last-child{color:var(--teal);font-weight:600}
+.insight-card{background:rgba(212,175,55,0.06);border:1px solid var(--gold-border);border-radius:var(--radius-sm);padding:.9rem 1rem;margin-bottom:.6rem;font-size:.88rem;line-height:1.55}
+.insight-card.warn{background:var(--rose-dim);border-color:var(--rose-border)}
+.insight-card strong{color:var(--gold)}
+.insight-card.warn strong{color:var(--rose)}
+.action-item{display:flex;gap:.6rem;padding:.6rem 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:.88rem}
+.action-item::before{content:"-->";color:var(--teal);font-weight:600}
+.wave-display{text-align:center;padding:1rem}
+.wave-display .current-wave{font-size:2.5em;margin-bottom:.3rem}
+.wave-display .wave-label{font-family:'Space Grotesk',sans-serif;font-size:1.2em;font-weight:600}
+.wave-display .sub{font-size:.82rem;color:var(--text3);margin-top:.5rem}
+.alignment-gauge{width:100%;height:8px;border-radius:4px;background:rgba(255,255,255,0.06);margin-top:.5rem;overflow:hidden}
+.alignment-gauge-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--rose),var(--amber),var(--teal));transition:.5s}
+
+/* History */
+.history-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:1rem;margin-bottom:.6rem;cursor:pointer;transition:.3s}
+.history-item:hover{border-color:var(--gold)}
+.history-item .date{font-family:'Space Grotesk',sans-serif;font-weight:600;color:var(--gold)}
+.history-item .summary{font-size:.82rem;color:var(--text2);margin-top:.3rem}
+.disclaimer{font-size:.78rem;color:var(--text3);border-top:1px solid rgba(255,255,255,0.06);padding-top:1rem;margin-top:2rem;line-height:1.6}
+
+/* Welcome hero */
+.hero{text-align:center;padding:3rem 1rem}
+.hero h1{margin-bottom:.5rem;font-size:2.6em}
+.hero .subtitle{color:var(--teal);font-family:'Space Grotesk',sans-serif;font-size:1.15em;font-weight:400;margin-bottom:1.5rem}
+.hero p{color:var(--text2);max-width:560px;margin:0 auto 2rem;font-size:.95rem;line-height:1.7}
+.hero-glyph{font-size:4em;margin-bottom:1rem;opacity:.7}
+.section-title{text-align:center;margin-bottom:.3rem}
+.section-sub{text-align:center;color:var(--text2);font-size:.92rem;margin-bottom:1.5rem}
+
+@media(max-width:640px){
+  .app{padding:1rem}
+  h1{font-size:1.8em}
+  .results-grid{grid-template-columns:1fr}
+  .wave-grid{grid-template-columns:1fr}
+  .nav-buttons{flex-direction:column-reverse;gap:.5rem}
+  .nav-buttons .btn{width:100%;justify-content:center}
+  .hero{padding:2rem .5rem}
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+
+<!-- Screen 0: Welcome -->
+<div class="screen active" id="s-welcome">
+  <div class="hero">
+    <div class="hero-glyph">&#9878;</div>
+    <h1>The Council of Selves Assessment</h1>
+    <p class="subtitle">Discover your inner architecture</p>
+    <p>This assessment maps your Identity Operating System -- the Council of Selves that drive your decisions, the Waves of energy that power your days, the Compass that guides your direction, and the Chair that leads it all.</p>
+    <p>Answer honestly. There are no right or wrong scores. The goal is self-recognition, not self-judgment.</p>
+    <button class="btn btn-primary" onclick="goTo(1)">Begin Assessment</button>
+    <div style="margin-top:1rem" id="history-link"></div>
+  </div>
+  <div style="margin-top:1.5rem;display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap">
+    <a href="/book" class="btn btn-secondary btn-sm">The Book</a>
+    <a href="/ios-toolkit" class="btn btn-secondary btn-sm">IOS Quick-Start Kit</a>
+  </div>
+  <p class="disclaimer">This is a self-reflection tool, not a diagnostic instrument. It draws on the Identity Operating System (IOS) framework from <em style="color:var(--gold)">The Council of Selves</em> by Nuno Val&#233;rio. For persistent distress, consult a qualified professional.</p>
+</div>
+
+<!-- Screen 1: Council -->
+<div class="screen" id="s-council">
+  <div class="progress-bar"><div class="step done"></div><div class="step current"></div><div class="step"></div><div class="step"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
+  <p class="step-label">Step 2 of 7</p>
+  <h2 class="section-title">Meet Your Council</h2>
+  <p class="section-sub">Rate each Self on three dimensions over the past week.</p>
+
+  <div class="card" id="c-architect">
+    <div class="card-header"><span class="card-icon">&#127963;</span><span class="card-title">The Architect</span></div>
+    <p class="card-desc">The strategist. Plans, structures, designs systems. Fears wasted effort. Shadow: paralysis by analysis.</p>
+    <div class="slider-group"><div class="slider-label"><span>Activity</span><span class="val" id="v-architect-act">3</span></div><p class="slider-question">How active has the Architect been this week?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('architect-act',this.value)"><div class="slider-ends"><span>Dormant</span><span>Dominant</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Influence</span><span class="val" id="v-architect-inf">3</span></div><p class="slider-question">How much does it drive your decisions?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('architect-inf',this.value)"><div class="slider-ends"><span>Minimal</span><span>Overwhelming</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Health</span><span class="val" id="v-architect-hlt">3</span></div><p class="slider-question">Is it serving you well, or stuck in paralysis-by-analysis?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('architect-hlt',this.value)"><div class="slider-ends"><span>Unhealthy</span><span>Integrated</span></div></div>
+  </div>
+
+  <div class="card" id="c-maker">
+    <div class="card-header"><span class="card-icon">&#9874;</span><span class="card-title">The Maker</span></div>
+    <p class="card-desc">The executor. Demands action, flow, and visible output. Hates disruption. Shadow: obsession and isolation.</p>
+    <div class="slider-group"><div class="slider-label"><span>Activity</span><span class="val" id="v-maker-act">3</span></div><p class="slider-question">How active has the Maker been this week?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('maker-act',this.value)"><div class="slider-ends"><span>Dormant</span><span>Dominant</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Influence</span><span class="val" id="v-maker-inf">3</span></div><p class="slider-question">How much does it drive your decisions?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('maker-inf',this.value)"><div class="slider-ends"><span>Minimal</span><span>Overwhelming</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Health</span><span class="val" id="v-maker-hlt">3</span></div><p class="slider-question">Is it in productive flow, or burning out?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('maker-hlt',this.value)"><div class="slider-ends"><span>Unhealthy</span><span>Integrated</span></div></div>
+  </div>
+
+  <div class="card" id="c-protector">
+    <div class="card-header"><span class="card-icon">&#128737;</span><span class="card-title">The Protector</span></div>
+    <p class="card-desc">The sentinel. Scans for threats. Uses anxiety and avoidance as warning systems. The most loving part of your system.</p>
+    <div class="slider-group"><div class="slider-label"><span>Activity</span><span class="val" id="v-protector-act">3</span></div><p class="slider-question">How active has the Protector been this week?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('protector-act',this.value)"><div class="slider-ends"><span>Dormant</span><span>Dominant</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Influence</span><span class="val" id="v-protector-inf">3</span></div><p class="slider-question">How much does it drive your decisions?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('protector-inf',this.value)"><div class="slider-ends"><span>Minimal</span><span>Overwhelming</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Health</span><span class="val" id="v-protector-hlt">3</span></div><p class="slider-question">Is it keeping you safely alert, or freezing you in fear?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('protector-hlt',this.value)"><div class="slider-ends"><span>Unhealthy</span><span>Integrated</span></div></div>
+  </div>
+
+  <div class="card" id="c-innovator">
+    <div class="card-header"><span class="card-icon">&#10024;</span><span class="card-title">The Innovator</span></div>
+    <p class="card-desc">The visionary. Generates ideas, seeks novelty. When dark, becomes the Chaos Spirit -- destruction disguised as reinvention.</p>
+    <div class="slider-group"><div class="slider-label"><span>Activity</span><span class="val" id="v-innovator-act">3</span></div><p class="slider-question">How active has the Innovator been this week?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('innovator-act',this.value)"><div class="slider-ends"><span>Dormant</span><span>Dominant</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Influence</span><span class="val" id="v-innovator-inf">3</span></div><p class="slider-question">How much does it drive your decisions?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('innovator-inf',this.value)"><div class="slider-ends"><span>Minimal</span><span>Overwhelming</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Health</span><span class="val" id="v-innovator-hlt">3</span></div><p class="slider-question">Is it sparking creation, or fragmenting your focus?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('innovator-hlt',this.value)"><div class="slider-ends"><span>Unhealthy</span><span>Integrated</span></div></div>
+  </div>
+
+  <div class="card" id="c-wounded">
+    <div class="card-header"><span class="card-icon">&#128148;</span><span class="card-title">The Wounded One</span></div>
+    <p class="card-desc">The keeper of unresolved pain. Carries emotional memory. Activates when old patterns trigger. Cannot be rushed.</p>
+    <div class="slider-group"><div class="slider-label"><span>Activity</span><span class="val" id="v-wounded-act">3</span></div><p class="slider-question">How active has the Wounded One been this week?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('wounded-act',this.value)"><div class="slider-ends"><span>Dormant</span><span>Dominant</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Influence</span><span class="val" id="v-wounded-inf">3</span></div><p class="slider-question">How much does it drive your decisions?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('wounded-inf',this.value)"><div class="slider-ends"><span>Minimal</span><span>Overwhelming</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Health</span><span class="val" id="v-wounded-hlt">3</span></div><p class="slider-question">Are you processing with compassion, or being hijacked by old pain?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('wounded-hlt',this.value)"><div class="slider-ends"><span>Unhealthy</span><span>Integrated</span></div></div>
+  </div>
+
+  <div class="card" id="c-leader">
+    <div class="card-header"><span class="card-icon">&#128084;</span><span class="card-title">The Responsible Leader</span></div>
+    <p class="card-desc">The duty-bearer. Manages obligations, expectations, and the weight of leadership roles. Serves, but can drown.</p>
+    <div class="slider-group"><div class="slider-label"><span>Activity</span><span class="val" id="v-leader-act">3</span></div><p class="slider-question">How active has the Responsible Leader been this week?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('leader-act',this.value)"><div class="slider-ends"><span>Dormant</span><span>Dominant</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Influence</span><span class="val" id="v-leader-inf">3</span></div><p class="slider-question">How much does it drive your decisions?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('leader-inf',this.value)"><div class="slider-ends"><span>Minimal</span><span>Overwhelming</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Health</span><span class="val" id="v-leader-hlt">3</span></div><p class="slider-question">Is it serving with purpose, or drowning in obligation?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('leader-hlt',this.value)"><div class="slider-ends"><span>Unhealthy</span><span>Integrated</span></div></div>
+  </div>
+
+  <div class="nav-buttons"><button class="btn btn-secondary" onclick="goTo(0)">Back</button><button class="btn btn-primary" onclick="goTo(2)">Next: Shadow Council</button></div>
+</div>
+
+<!-- Screen 2: Shadow Council -->
+<div class="screen" id="s-shadows">
+  <div class="progress-bar"><div class="step done"></div><div class="step done"></div><div class="step current"></div><div class="step"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
+  <p class="step-label">Step 3 of 7</p>
+  <h2 class="section-title">The Shadow Council</h2>
+  <p class="section-sub">These voices protect through self-sabotage. Rate their presence honestly.</p>
+
+  <div class="card shadow-card">
+    <div class="card-header"><span class="card-icon">&#9878;</span><span class="card-title" style="color:var(--rose)">The Critic</span></div>
+    <p class="card-desc">The perfectionist hiding behind judgment. "Who do you think you are?" Pre-empts action to prevent the pain of failure. Its currency is shame.</p>
+    <div class="slider-group"><div class="slider-label"><span>Presence</span><span class="val" id="v-critic-pre">3</span></div><p class="slider-question">How often does the Critic speak?</p><input type="range" class="rose-slider" min="1" max="5" value="3" oninput="updateVal('critic-pre',this.value)"><div class="slider-ends"><span>Rarely</span><span>Constantly</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Blending</span><span class="val" id="v-critic-bld">3</span></div><p class="slider-question">How often do you mistake its voice for truth?</p><input type="range" class="rose-slider" min="1" max="5" value="3" oninput="updateVal('critic-bld',this.value)"><div class="slider-ends"><span>I see through it</span><span>I believe it</span></div></div>
+  </div>
+
+  <div class="card shadow-card">
+    <div class="card-header"><span class="card-icon">&#128367;</span><span class="card-title" style="color:var(--rose)">The Martyr</span></div>
+    <p class="card-desc">Builds identity on sacrifice. Does everything, asks for nothing, then resents silently. Exhaustion presented as virtue.</p>
+    <div class="slider-group"><div class="slider-label"><span>Presence</span><span class="val" id="v-martyr-pre">3</span></div><p class="slider-question">How often does the Martyr appear?</p><input type="range" class="rose-slider" min="1" max="5" value="3" oninput="updateVal('martyr-pre',this.value)"><div class="slider-ends"><span>Rarely</span><span>Constantly</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Blending</span><span class="val" id="v-martyr-bld">3</span></div><p class="slider-question">How often does self-sacrifice feel like virtue rather than pattern?</p><input type="range" class="rose-slider" min="1" max="5" value="3" oninput="updateVal('martyr-bld',this.value)"><div class="slider-ends"><span>I see through it</span><span>I believe it</span></div></div>
+  </div>
+
+  <div class="card shadow-card">
+    <div class="card-header"><span class="card-icon">&#127917;</span><span class="card-title" style="color:var(--rose)">The Pleaser</span></div>
+    <p class="card-desc">Prioritizes external approval over internal truth. Says yes when the body screams no. Every false yes erodes the Chair's authority.</p>
+    <div class="slider-group"><div class="slider-label"><span>Presence</span><span class="val" id="v-pleaser-pre">3</span></div><p class="slider-question">How often does the Pleaser appear?</p><input type="range" class="rose-slider" min="1" max="5" value="3" oninput="updateVal('pleaser-pre',this.value)"><div class="slider-ends"><span>Rarely</span><span>Constantly</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Blending</span><span class="val" id="v-pleaser-bld">3</span></div><p class="slider-question">How often do you agree externally while disagreeing internally?</p><input type="range" class="rose-slider" min="1" max="5" value="3" oninput="updateVal('pleaser-bld',this.value)"><div class="slider-ends"><span>I see through it</span><span>I believe it</span></div></div>
+  </div>
+
+  <div class="card shadow-card">
+    <div class="card-header"><span class="card-icon">&#128165;</span><span class="card-title" style="color:var(--rose)">The Saboteur</span></div>
+    <p class="card-desc">Tears down progress through impulsive destruction. Views chaos as liberation. The Innovator's shadow pushed to its extreme.</p>
+    <div class="slider-group"><div class="slider-label"><span>Presence</span><span class="val" id="v-saboteur-pre">3</span></div><p class="slider-question">How often does the Saboteur appear?</p><input type="range" class="rose-slider" min="1" max="5" value="3" oninput="updateVal('saboteur-pre',this.value)"><div class="slider-ends"><span>Rarely</span><span>Constantly</span></div></div>
+    <div class="slider-group"><div class="slider-label"><span>Blending</span><span class="val" id="v-saboteur-bld">3</span></div><p class="slider-question">How often do impulsive actions feel like freedom rather than escape?</p><input type="range" class="rose-slider" min="1" max="5" value="3" oninput="updateVal('saboteur-bld',this.value)"><div class="slider-ends"><span>I see through it</span><span>I believe it</span></div></div>
+  </div>
+
+  <div class="nav-buttons"><button class="btn btn-secondary" onclick="goTo(1)">Back</button><button class="btn btn-primary" onclick="goTo(3)">Next: The Waves</button></div>
+</div>
+
+<!-- Screen 3: Waves -->
+<div class="screen" id="s-waves">
+  <div class="progress-bar"><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step current"></div><div class="step"></div><div class="step"></div><div class="step"></div></div>
+  <p class="step-label">Step 4 of 7</p>
+  <h2 class="section-title">The Waves</h2>
+  <p class="section-sub">Your biology runs on tides, not batteries. Where are you right now?</p>
+
+  <h3 style="margin-bottom:.75rem">Current Wave State</h3>
+  <div class="wave-grid" id="wave-current">
+    <div class="wave-card rt" onclick="selectWave('current','rising_tide',this)"><div class="wave-icon">&#127754;</div><div class="wave-name">Rising Tide</div><div class="wave-desc">High energy, high clarity. Your peak window.</div></div>
+    <div class="wave-card st" onclick="selectWave('current','storm',this)"><div class="wave-icon">&#9889;</div><div class="wave-name">Storm</div><div class="wave-desc">High energy, low clarity. Ideas flooding.</div></div>
+    <div class="wave-card lt" onclick="selectWave('current','low_tide',this)"><div class="wave-icon">&#127749;</div><div class="wave-name">Low Tide</div><div class="wave-desc">Low energy, high clarity. Gentle tasks.</div></div>
+    <div class="wave-card ut" onclick="selectWave('current','undertow',this)"><div class="wave-icon">&#127756;</div><div class="wave-name">Undertow</div><div class="wave-desc">Low energy, low clarity. Rest is not optional.</div></div>
+  </div>
+
+  <h3 style="margin-bottom:.75rem">Dominant Pattern This Week</h3>
+  <div class="wave-grid" id="wave-dominant">
+    <div class="wave-card rt" onclick="selectWave('dominant','rising_tide',this)"><div class="wave-icon">&#127754;</div><div class="wave-name">Rising Tide</div><div class="wave-desc">Mostly peak performance</div></div>
+    <div class="wave-card st" onclick="selectWave('dominant','storm',this)"><div class="wave-icon">&#9889;</div><div class="wave-name">Storm</div><div class="wave-desc">Mostly scattered energy</div></div>
+    <div class="wave-card lt" onclick="selectWave('dominant','low_tide',this)"><div class="wave-icon">&#127749;</div><div class="wave-name">Low Tide</div><div class="wave-desc">Mostly low and gentle</div></div>
+    <div class="wave-card ut" onclick="selectWave('dominant','undertow',this)"><div class="wave-icon">&#127756;</div><div class="wave-name">Undertow</div><div class="wave-desc">Mostly depleted</div></div>
+  </div>
+
+  <div class="card" style="margin-top:.5rem">
+    <div class="slider-group"><div class="slider-label"><span>Energy-Task Alignment</span><span class="val" id="v-wave-align">3</span></div><p class="slider-question">How well have your tasks matched your energy states this week?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('wave-align',this.value)"><div class="slider-ends"><span>Complete mismatch</span><span>Perfect alignment</span></div></div>
+  </div>
+
+  <div class="nav-buttons"><button class="btn btn-secondary" onclick="goTo(2)">Back</button><button class="btn btn-primary" onclick="goTo(4)">Next: The Compass</button></div>
+</div>
+
+<!-- Screen 4: Compass -->
+<div class="screen" id="s-compass">
+  <div class="progress-bar"><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step current"></div><div class="step"></div><div class="step"></div></div>
+  <p class="step-label">Step 5 of 7</p>
+  <h2 class="section-title">The Compass</h2>
+  <p class="section-sub">Four directions. No decision should ignore any of them.</p>
+
+  <div class="card">
+    <div class="card-header"><span class="card-icon" style="color:var(--gold)">&#9733;</span><span class="card-title">North -- Meaning</span></div>
+    <p class="slider-question">How aligned are your current actions with the person you want to become?</p>
+    <div class="slider-group"><div class="slider-label"><span>Score</span><span class="val" id="v-north">0</span></div><input type="range" class="compass-slider" min="-3" max="3" value="0" oninput="updateCompass('north',this.value)"><div class="slider-ends"><span>-3 Completely lost</span><span>+3 Deeply aligned</span></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-icon" style="color:var(--teal)">&#9829;</span><span class="card-title" style="color:var(--teal)">East -- People</span></div>
+    <p class="slider-question">How nourishing are your relationships and social connections right now?</p>
+    <div class="slider-group"><div class="slider-label"><span>Score</span><span class="val" id="v-east">0</span></div><input type="range" class="compass-slider" min="-3" max="3" value="0" oninput="updateCompass('east',this.value)"><div class="slider-ends"><span>-3 Isolated / toxic</span><span>+3 Deeply connected</span></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-icon" style="color:var(--rose)">&#9883;</span><span class="card-title" style="color:var(--rose)">South -- Body</span></div>
+    <p class="slider-question">How well are you supporting your physical capacity?</p>
+    <div class="slider-group"><div class="slider-label"><span>Score</span><span class="val" id="v-south">0</span></div><input type="range" class="compass-slider" min="-3" max="3" value="0" oninput="updateCompass('south',this.value)"><div class="slider-ends"><span>-3 Depleted</span><span>+3 Sustainable</span></div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-header"><span class="card-icon" style="color:var(--purple)">&#9998;</span><span class="card-title" style="color:var(--purple)">West -- Craft</span></div>
+    <p class="slider-question">How engaged are you with work that deepens your craft?</p>
+    <div class="slider-group"><div class="slider-label"><span>Score</span><span class="val" id="v-west">0</span></div><input type="range" class="compass-slider" min="-3" max="3" value="0" oninput="updateCompass('west',this.value)"><div class="slider-ends"><span>-3 Stagnant</span><span>+3 Deeply engaged</span></div></div>
+  </div>
+
+  <div class="card" style="text-align:center;padding:1rem">
+    <span style="font-size:.9rem;color:var(--text2)">Compass Total: </span>
+    <span id="compass-total" style="font-family:'Space Grotesk';font-size:1.4em;font-weight:700;color:var(--gold)">0</span>
+    <span id="compass-badges"></span>
+  </div>
+
+  <div class="nav-buttons"><button class="btn btn-secondary" onclick="goTo(3)">Back</button><button class="btn btn-primary" onclick="goTo(5)">Next: The Chair</button></div>
+</div>
+
+<!-- Screen 5: Chair -->
+<div class="screen" id="s-chair">
+  <div class="progress-bar"><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step current"></div><div class="step"></div></div>
+  <p class="step-label">Step 6 of 7</p>
+  <h2 class="section-title">The Chair</h2>
+  <p class="section-sub">The Chair is not a Self. It is the practice of sovereign observation.</p>
+
+  <div class="card">
+    <div class="slider-group"><div class="slider-label"><span>Pause</span><span class="val" id="v-chair-pause">3</span></div><p class="slider-question">How often do you pause before reacting to strong emotions or triggers?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('chair-pause',this.value)"><div class="slider-ends"><span>Almost never</span><span>Almost always</span></div></div>
+  </div>
+  <div class="card">
+    <div class="slider-group"><div class="slider-label"><span>Awareness</span><span class="val" id="v-chair-aware">3</span></div><p class="slider-question">How easily can you identify which Self is currently driving your behavior?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('chair-aware',this.value)"><div class="slider-ends"><span>I can't tell</span><span>I always know</span></div></div>
+  </div>
+  <div class="card">
+    <div class="slider-group"><div class="slider-label"><span>Redirection</span><span class="val" id="v-chair-redir">3</span></div><p class="slider-question">How frequently do you consciously redirect from reactive to intentional action?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('chair-redir',this.value)"><div class="slider-ends"><span>Rarely</span><span>Consistently</span></div></div>
+  </div>
+  <div class="card">
+    <div class="slider-group"><div class="slider-label"><span>Compassion</span><span class="val" id="v-chair-comp">3</span></div><p class="slider-question">When a Shadow Self speaks, how well do you validate it without being hijacked?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('chair-comp',this.value)"><div class="slider-ends"><span>Always swept away</span><span>Hear with distance</span></div></div>
+  </div>
+  <div class="card">
+    <div class="slider-group"><div class="slider-label"><span>Ritual</span><span class="val" id="v-chair-ritual">3</span></div><p class="slider-question">How consistent is your daily self-leadership practice (check-ins, pauses, coherence)?</p><input type="range" min="1" max="5" value="3" oninput="updateVal('chair-ritual',this.value)"><div class="slider-ends"><span>No practice</span><span>Daily and reliable</span></div></div>
+  </div>
+
+  <div class="nav-buttons"><button class="btn btn-secondary" onclick="goTo(4)">Back</button><button class="btn btn-primary" onclick="showResults()">See Your Results</button></div>
+</div>
+
+<!-- Screen 6: Results -->
+<div class="screen" id="s-results">
+  <div class="progress-bar"><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step done"></div><div class="step done"></div></div>
+  <p class="step-label">Assessment Complete</p>
+  <h2 class="section-title">Your IOS Assessment</h2>
+  <p class="section-sub" id="results-date"></p>
+
+  <div class="results-grid">
+    <!-- Radar -->
+    <div class="result-card">
+      <h3 style="text-align:center;margin-bottom:.75rem">Council Map</h3>
+      <canvas id="radar-canvas" width="360" height="360"></canvas>
+      <div style="text-align:center;margin-top:.5rem;font-size:.75rem;color:var(--text3)">Gold = Activity | Teal = Health</div>
+    </div>
+    <!-- Shadows -->
+    <div class="result-card">
+      <h3 style="margin-bottom:.75rem">Shadow Intensity</h3>
+      <div id="shadow-bars"></div>
+      <div style="font-size:.75rem;color:var(--text3);margin-top:.5rem">Combined (Presence + Blending) / 2</div>
+    </div>
+    <!-- Wave -->
+    <div class="result-card">
+      <h3 style="text-align:center;margin-bottom:.5rem">Wave State</h3>
+      <div class="wave-display" id="wave-result"></div>
+    </div>
+    <!-- Compass -->
+    <div class="result-card">
+      <h3 style="text-align:center;margin-bottom:.5rem">Compass</h3>
+      <canvas id="compass-canvas" width="280" height="280"></canvas>
+      <div style="text-align:center;margin-top:.5rem" id="compass-result-badges"></div>
+    </div>
+    <!-- Chair -->
+    <div class="result-card full">
+      <div style="display:flex;gap:2rem;align-items:center;flex-wrap:wrap">
+        <div>
+          <h3 style="margin-bottom:.75rem">Chair Strength</h3>
+          <div class="chair-ring"><canvas id="chair-canvas" width="140" height="140"></canvas><div class="chair-pct" id="chair-pct"></div></div>
+        </div>
+        <div style="flex:1;min-width:200px">
+          <ul class="chair-dims" id="chair-dims"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insights -->
+  <div class="result-card full" style="margin-bottom:1rem">
+    <h3 style="margin-bottom:.75rem">Key Insights</h3>
+    <div id="insights"></div>
+  </div>
+
+  <!-- Actions -->
+  <div class="result-card full" style="margin-bottom:1rem">
+    <h3 style="margin-bottom:.75rem">Recommended Actions</h3>
+    <div id="actions"></div>
+  </div>
+
+  <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem">
+    <button class="btn btn-primary" onclick="saveAssessment()">Save Assessment</button>
+    <button class="btn btn-secondary" onclick="resetAndStart()">New Assessment</button>
+    <button class="btn btn-secondary" onclick="goTo(7)">View History</button>
+  </div>
+  <p class="disclaimer">This assessment reflects a moment in time. Your IOS is a living system -- revisit regularly to track your evolution. This is not a clinical tool.</p>
+</div>
+
+<!-- Screen 7: History -->
+<div class="screen" id="s-history">
+  <h2 class="section-title">Assessment History</h2>
+  <p class="section-sub">Your previous assessments, newest first.</p>
+  <div id="history-list"></div>
+  <div style="margin-top:1.5rem"><button class="btn btn-secondary" onclick="goTo(0)">Back to Welcome</button></div>
+</div>
+
+</div>
+
+<script>
+// ============ STATE ============
+const D = {
+  council: {
+    architect:{activity:3,influence:3,health:3},
+    maker:{activity:3,influence:3,health:3},
+    protector:{activity:3,influence:3,health:3},
+    innovator:{activity:3,influence:3,health:3},
+    wounded_one:{activity:3,influence:3,health:3},
+    responsible_leader:{activity:3,influence:3,health:3}
+  },
+  shadows: {
+    critic:{presence:3,blending:3},
+    martyr:{presence:3,blending:3},
+    pleaser:{presence:3,blending:3},
+    saboteur:{presence:3,blending:3}
+  },
+  waves: {current:null,dominant:null,alignment:3},
+  compass: {north:0,east:0,south:0,west:0},
+  chair: {pause:3,awareness:3,redirection:3,compassion:3,ritual:3}
+};
+
+const SELF_MAP = {
+  'architect':'architect','maker':'maker','protector':'protector',
+  'innovator':'innovator','wounded':'wounded_one','leader':'responsible_leader'
+};
+const SELF_LABELS = {architect:'Architect',maker:'Maker',protector:'Protector',innovator:'Innovator',wounded_one:'Wounded One',responsible_leader:'Resp. Leader'};
+const DIM_MAP = {act:'activity',inf:'influence',hlt:'health',pre:'presence',bld:'blending'};
+const SHADOW_MAP = {critic:'critic',martyr:'martyr',pleaser:'pleaser',saboteur:'saboteur'};
+const SHADOW_LABELS = {critic:'Critic',martyr:'Martyr',pleaser:'Pleaser',saboteur:'Saboteur'};
+const CHAIR_MAP = {pause:'pause',aware:'awareness',redir:'redirection',comp:'compassion',ritual:'ritual'};
+const CHAIR_LABELS = {pause:'Pause',awareness:'Awareness',redirection:'Redirection',compassion:'Compassion',ritual:'Ritual'};
+const WAVE_LABELS = {rising_tide:'Rising Tide',storm:'Storm',low_tide:'Low Tide',undertow:'Undertow'};
+const WAVE_ICONS = {rising_tide:'\u{1F30A}',storm:'\u26A1',low_tide:'\u{1F305}',undertow:'\u{1F31C}'};
+const WAVE_COLORS = {rising_tide:'#2DD4BF',storm:'#FBBF24',low_tide:'#60A5FA',undertow:'#F472B6'};
+const DIR_COLORS = {north:'#D4AF37',east:'#2DD4BF',south:'#F472B6',west:'#7C4DFF'};
+const DIR_LABELS = {north:'North (Meaning)',east:'East (People)',south:'South (Body)',west:'West (Craft)'};
+
+// ============ NAVIGATION ============
+const screens = ['s-welcome','s-council','s-shadows','s-waves','s-compass','s-chair','s-results','s-history'];
+function goTo(i){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(screens[i]).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ============ SLIDER UPDATES ============
+function updateVal(id, val){
+  document.getElementById('v-'+id).textContent = val;
+  const parts = id.split('-');
+  if(parts[0]==='wave'){D.waves.alignment=+val;return}
+  if(parts[0]==='chair'){
+    const k = CHAIR_MAP[parts[1]];
+    if(k) D.chair[k]=+val;
+    return;
+  }
+  // council or shadow
+  const selfKey = SELF_MAP[parts[0]] || SHADOW_MAP[parts[0]];
+  const dimKey = DIM_MAP[parts[1]];
+  if(selfKey && dimKey){
+    if(D.council[selfKey]) D.council[selfKey][dimKey]=+val;
+    else if(D.shadows[selfKey]) D.shadows[selfKey][dimKey]=+val;
+  }
+}
+
+function updateCompass(dir, val){
+  D.compass[dir]=+val;
+  document.getElementById('v-'+dir).textContent = (+val>0?'+':'')+val;
+  const total = D.compass.north+D.compass.east+D.compass.south+D.compass.west;
+  document.getElementById('compass-total').textContent = (total>0?'+':'')+total;
+  let badges='';
+  ['north','east','south','west'].forEach(d=>{
+    if(D.compass[d]===-3) badges+='<span class="veto-badge">VETO: '+d.toUpperCase()+'</span> ';
+  });
+  if(total>=5) badges+='<span class="align-badge">Aligned</span>';
+  document.getElementById('compass-badges').innerHTML=badges;
+}
+
+// ============ WAVE SELECTION ============
+function selectWave(type, val, el){
+  const grid = el.closest('.wave-grid');
+  grid.querySelectorAll('.wave-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  D.waves[type]=val;
+}
+
+// ============ RESULTS ============
+function showResults(){
+  // Validate waves
+  if(!D.waves.current||!D.waves.dominant){
+    alert('Please select both your current wave state and dominant pattern.');
+    return;
+  }
+  goTo(6);
+  renderResults();
+}
+
+function renderResults(){
+  document.getElementById('results-date').textContent = new Date().toLocaleDateString('en-GB',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  drawRadar();
+  drawShadowBars();
+  drawWaveResult();
+  drawCompass();
+  drawChair();
+  generateInsights();
+  generateActions();
+}
+
+// ---- RADAR CHART ----
+function drawRadar(){
+  const c = document.getElementById('radar-canvas');
+  const ctx = c.getContext('2d');
+  const W=c.width, H=c.height, cx=W/2, cy=H/2, R=W*0.35;
+  ctx.clearRect(0,0,W,H);
+  const keys = Object.keys(D.council);
+  const n = keys.length;
+  const angleStep = (Math.PI*2)/n;
+  const startAngle = -Math.PI/2;
+
+  // Grid rings
+  for(let r=1;r<=5;r++){
+    ctx.beginPath();
+    for(let i=0;i<=n;i++){
+      const a = startAngle + i*angleStep;
+      const rad = R*(r/5);
+      const x = cx + rad*Math.cos(a);
+      const y = cy + rad*Math.sin(a);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle='rgba(255,255,255,'+(r===5?0.12:0.05)+')';
+    ctx.stroke();
+  }
+
+  // Axis lines + labels
+  keys.forEach((k,i)=>{
+    const a = startAngle + i*angleStep;
+    ctx.beginPath();ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+R*Math.cos(a),cy+R*Math.sin(a));
+    ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.stroke();
+    // Label
+    const lx = cx + (R+22)*Math.cos(a);
+    const ly = cy + (R+22)*Math.sin(a);
+    ctx.fillStyle='#a0a0b8';ctx.font='11px "Space Grotesk"';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(SELF_LABELS[k],lx,ly);
+  });
+
+  // Activity polygon (gold)
+  drawPoly(ctx,cx,cy,R,keys.map(k=>D.council[k].activity),startAngle,angleStep,'rgba(212,175,55,0.25)','#D4AF37');
+  // Health polygon (teal)
+  drawPoly(ctx,cx,cy,R,keys.map(k=>D.council[k].health),startAngle,angleStep,'rgba(45,212,191,0.15)','#2DD4BF');
+}
+
+function drawPoly(ctx,cx,cy,R,vals,startAngle,step,fill,stroke){
+  ctx.beginPath();
+  vals.forEach((v,i)=>{
+    const a = startAngle + i*step;
+    const r = R*(v/5);
+    i===0?ctx.moveTo(cx+r*Math.cos(a),cy+r*Math.sin(a)):ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+  });
+  ctx.closePath();ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=stroke;ctx.lineWidth=2;ctx.stroke();
+  // Dots
+  vals.forEach((v,i)=>{
+    const a = startAngle + i*step;
+    const r = R*(v/5);
+    ctx.beginPath();ctx.arc(cx+r*Math.cos(a),cy+r*Math.sin(a),4,0,Math.PI*2);ctx.fillStyle=stroke;ctx.fill();
+  });
+}
+
+// ---- SHADOW BARS ----
+function drawShadowBars(){
+  const el = document.getElementById('shadow-bars');
+  let html='';
+  Object.keys(D.shadows).forEach(k=>{
+    const s = D.shadows[k];
+    const avg = ((s.presence+s.blending)/2).toFixed(1);
+    const pct = (avg/5)*100;
+    html+=`<div class="shadow-bar">
+      <div class="shadow-bar-label"><span>${SHADOW_LABELS[k]}</span><span style="color:var(--rose)">${avg}/5</span></div>
+      <div class="shadow-bar-track"><div class="shadow-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  });
+  el.innerHTML=html;
+}
+
+// ---- WAVE RESULT ----
+function drawWaveResult(){
+  const el = document.getElementById('wave-result');
+  const cur = D.waves.current;
+  const dom = D.waves.dominant;
+  const align = D.waves.alignment;
+  el.innerHTML=`
+    <div class="current-wave">${WAVE_ICONS[cur]||''}</div>
+    <div class="wave-label" style="color:${WAVE_COLORS[cur]||'#fff'}">${WAVE_LABELS[cur]||'--'}</div>
+    <div class="sub">Dominant this week: <strong style="color:${WAVE_COLORS[dom]||'#fff'}">${WAVE_LABELS[dom]||'--'}</strong></div>
+    <div class="sub" style="margin-top:.5rem">Energy-Task Alignment: <strong style="color:var(--teal)">${align}/5</strong></div>
+    <div class="alignment-gauge"><div class="alignment-gauge-fill" style="width:${(align/5)*100}%"></div></div>
+  `;
+}
+
+// ---- COMPASS VISUALIZATION ----
+function drawCompass(){
+  const c = document.getElementById('compass-canvas');
+  const ctx = c.getContext('2d');
+  const W=c.width,H=c.height,cx=W/2,cy=H/2,R=W*0.38;
+  ctx.clearRect(0,0,W,H);
+
+  // Grid circles
+  for(let r=1;r<=3;r++){
+    ctx.beginPath();ctx.arc(cx,cy,R*(r/3),0,Math.PI*2);
+    ctx.strokeStyle='rgba(255,255,255,'+(r===3?0.1:0.05)+')';ctx.stroke();
+  }
+  // Axes
+  ctx.strokeStyle='rgba(255,255,255,0.08)';
+  ctx.beginPath();ctx.moveTo(cx,cy-R-10);ctx.lineTo(cx,cy+R+10);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(cx-R-10,cy);ctx.lineTo(cx+R+10,cy);ctx.stroke();
+
+  // Direction vectors
+  const dirs = {north:{dx:0,dy:-1},east:{dx:1,dy:0},south:{dx:0,dy:1},west:{dx:-1,dy:0}};
+  Object.keys(dirs).forEach(d=>{
+    const v = D.compass[d];
+    const mag = Math.abs(v)/3;
+    const sign = v>=0?1:-1;
+    const endX = cx + dirs[d].dx * R * mag * sign;
+    const endY = cy + dirs[d].dy * R * mag * sign;
+
+    // Line
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(endX,endY);
+    ctx.strokeStyle=DIR_COLORS[d];ctx.lineWidth=3;ctx.stroke();ctx.lineWidth=1;
+
+    // Dot
+    ctx.beginPath();ctx.arc(endX,endY,6,0,Math.PI*2);ctx.fillStyle=DIR_COLORS[d];ctx.fill();
+  });
+
+  // Labels
+  ctx.font='bold 12px "Space Grotesk"';ctx.textAlign='center';
+  ctx.fillStyle=DIR_COLORS.north;ctx.fillText('N',cx,cy-R-16);
+  ctx.fillStyle=DIR_COLORS.south;ctx.fillText('S',cx,cy+R+20);
+  ctx.fillStyle=DIR_COLORS.east;ctx.textAlign='left';ctx.fillText('E',cx+R+12,cy+4);
+  ctx.fillStyle=DIR_COLORS.west;ctx.textAlign='right';ctx.fillText('W',cx-R-12,cy+4);
+
+  // Total
+  const total=D.compass.north+D.compass.east+D.compass.south+D.compass.west;
+  ctx.textAlign='center';ctx.font='bold 22px "Space Grotesk"';ctx.fillStyle='#e8e8f0';
+  ctx.fillText((total>0?'+':'')+total,cx,cy+7);
+
+  // Badges
+  let badges='';
+  ['north','east','south','west'].forEach(d=>{
+    if(D.compass[d]===-3) badges+=`<span class="veto-badge">VETO: ${d.toUpperCase()}</span> `;
+  });
+  if(total>=5) badges+='<span class="align-badge">Aligned</span>';
+  document.getElementById('compass-result-badges').innerHTML=badges;
+}
+
+// ---- CHAIR RING ----
+function drawChair(){
+  const c = document.getElementById('chair-canvas');
+  const ctx = c.getContext('2d');
+  const W=c.width,H=c.height,cx=W/2,cy=H/2,R=55;
+  ctx.clearRect(0,0,W,H);
+
+  const vals = Object.values(D.chair);
+  const avg = vals.reduce((a,b)=>a+b,0)/vals.length;
+  const pct = Math.round((avg/5)*100);
+
+  // Background arc
+  ctx.beginPath();ctx.arc(cx,cy,R,-Math.PI*0.75,Math.PI*0.75);
+  ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=10;ctx.lineCap='round';ctx.stroke();
+
+  // Value arc
+  const range = Math.PI*1.5;
+  const endAngle = -Math.PI*0.75 + range*(avg/5);
+  ctx.beginPath();ctx.arc(cx,cy,R,-Math.PI*0.75,endAngle);
+  ctx.strokeStyle='#2DD4BF';ctx.lineWidth=10;ctx.lineCap='round';ctx.stroke();
+
+  document.getElementById('chair-pct').textContent=pct+'%';
+
+  // Dimensions list
+  const el = document.getElementById('chair-dims');
+  let html='';
+  Object.keys(D.chair).forEach(k=>{
+    html+=`<li><span>${CHAIR_LABELS[k]}</span><span>${D.chair[k]}/5</span></li>`;
+  });
+  el.innerHTML=html;
+}
+
+// ---- INSIGHTS ----
+function generateInsights(){
+  const el = document.getElementById('insights');
+  const insights = [];
+
+  // Council insights
+  Object.keys(D.council).forEach(k=>{
+    const s = D.council[k];
+    if(s.activity>=4 && s.health<=2){
+      insights.push({warn:true,text:`Your <strong>${SELF_LABELS[k]}</strong> is very active but unhealthy -- this Self may be hijacking the system. High activity with low health signals an unmet need or a pattern running unchecked.`});
+    }
+  });
+
+  if(D.council.protector.activity>=4){
+    insights.push({warn:true,text:`Your <strong>Protector</strong> is on high alert. Consider: what specific fear needs data or a contingency plan? The Protector calms when given information, not when dismissed.`});
+  }
+
+  if(D.council.wounded_one.activity>=4 && D.council.wounded_one.health<=2){
+    insights.push({warn:true,text:`The <strong>Wounded One</strong> is activated and not being processed with compassion. This is a signal to seek support, not push harder. Presence, not solutions.`});
+  }
+
+  if(D.council.innovator.activity>=4 && D.council.maker.health<=2){
+    insights.push({warn:false,text:`The <strong>Innovator</strong> is running but the <strong>Maker</strong> can't keep up. You may be starting more than you're finishing. Consider the Play Window: 30 minutes of no-output-required exploration, then park it.`});
+  }
+
+  if(D.council.responsible_leader.activity>=4 && D.compass.south<=-1){
+    insights.push({warn:true,text:`You're carrying heavy duty while your body is depleted. The <strong>South holds veto power</strong>. No leadership is sustainable from a bankrupt body.`});
+  }
+
+  // Shadow insights
+  Object.keys(D.shadows).forEach(k=>{
+    const s = D.shadows[k];
+    if(s.blending>=4){
+      insights.push({warn:true,text:`You are frequently <strong>blending with the ${SHADOW_LABELS[k]}</strong>. Practice the Un-blending Ritual: change the pronoun from "I am..." to "A part of me feels..." The distance is everything.`});
+    }
+  });
+
+  // Compass
+  const total=D.compass.north+D.compass.east+D.compass.south+D.compass.west;
+  if(total<5){
+    insights.push({warn:false,text:`Your <strong>Compass total (${total>0?'+':''}${total})</strong> is below the alignment threshold of +5. Consider which direction needs the most attention this week.`});
+  }
+  ['north','east','south','west'].forEach(d=>{
+    if(D.compass[d]===-3){
+      insights.push({warn:true,text:`<strong>VETO triggered on ${DIR_LABELS[d]}</strong>. The IOS recommends: no major decisions until this direction is addressed. A -3 in any direction overrides all other scores.`});
+    }
+  });
+
+  // Chair
+  const chairAvg = Object.values(D.chair).reduce((a,b)=>a+b,0)/5;
+  if(chairAvg<=2){
+    insights.push({warn:true,text:`Your <strong>Chair capacity is low</strong>. Start with the minimum viable practice: one breath, one question -- "Who is driving right now?" Don't try the full ritual. Just notice.`});
+  }
+
+  // Waves
+  if(D.waves.current==='undertow'){
+    insights.push({warn:true,text:`You are in <strong>Undertow</strong>. The single rule: you cannot lead what you cannot sustain. Regulate the body first. Then lead the mind.`});
+  }
+  if(D.waves.alignment<=2){
+    insights.push({warn:false,text:`Your <strong>energy-task alignment is poor</strong>. You may be forcing Rising Tide tasks onto an Undertow body. Use the 4R's: Recognize, Reframe, Reschedule, Release.`});
+  }
+
+  // Balanced council check
+  const activities = Object.values(D.council).map(s=>s.activity);
+  const maxA = Math.max(...activities), minA = Math.min(...activities);
+  if(maxA-minA>=3){
+    const dominant = Object.keys(D.council).find(k=>D.council[k].activity===maxA);
+    const neglected = Object.keys(D.council).find(k=>D.council[k].activity===minA);
+    insights.push({warn:false,text:`Your Council is <strong>imbalanced</strong>. The ${SELF_LABELS[dominant]} is dominant (${maxA}) while the ${SELF_LABELS[neglected]} is nearly silent (${minA}). What does the neglected Self need?`});
+  }
+
+  if(insights.length===0){
+    insights.push({warn:false,text:`Your system appears relatively balanced. Stay curious. The IOS is a practice, not a destination. Revisit this assessment weekly to track your evolution.`});
+  }
+
+  el.innerHTML = insights.map(i=>`<div class="insight-card${i.warn?' warn':''}">${i.text}</div>`).join('');
+}
+
+// ---- ACTIONS ----
+function generateActions(){
+  const el = document.getElementById('actions');
+  const actions = [];
+
+  // Priority action based on biggest issue
+  const chairAvg = Object.values(D.chair).reduce((a,b)=>a+b,0)/5;
+  if(chairAvg<=2){
+    actions.push('Start the Chair Reboot Protocol: body first (one good sleep, one real meal, one walk), then one question ("Who was driving?"), then one small act of pausing.');
+  }
+
+  if(D.waves.current==='undertow'){
+    actions.push('Invoke the South Veto: no decisions today. Sleep debt, nutrition, and nervous system regulation come first. Everything else waits.');
+  }
+
+  // Shadow-specific
+  const worstShadow = Object.keys(D.shadows).reduce((a,b)=>{
+    const sa=(D.shadows[a].presence+D.shadows[a].blending)/2;
+    const sb=(D.shadows[b].presence+D.shadows[b].blending)/2;
+    return sa>sb?a:b;
+  });
+  const worstScore = (D.shadows[worstShadow].presence+D.shadows[worstShadow].blending)/2;
+  if(worstScore>=3.5){
+    actions.push(`Practice the Un-blending Ritual with the ${SHADOW_LABELS[worstShadow]}: next time you hear its voice, pause and say "A part of me feels [the emotion]." Write the exact words on paper. Read them back. Notice the distance.`);
+  }
+
+  // Compass-specific
+  const lowestDir = Object.keys(D.compass).reduce((a,b)=>D.compass[a]<D.compass[b]?a:b);
+  if(D.compass[lowestDir]<=-1){
+    const dirActions = {
+      north: 'Spend 10 minutes with the Memento Mori Check: write the 3 things you spent the most time on this week. If you had one year left, would they still be on the list?',
+      east: 'Reach out to one person who matters. Not a text -- a real conversation. Relatedness is a biological need, not a luxury.',
+      south: 'Run the South Veto Quick Check: Sleep debt? Movement today? Blood sugar stable? Address the lowest one before doing anything else.',
+      west: 'Schedule one 90-minute Deep Work block this week. Protect it from all interruptions. Give the Maker what it needs: a clear prompt and unbroken time.'
+    };
+    actions.push(dirActions[lowestDir]);
+  }
+
+  // Chair-specific
+  if(D.chair.ritual<=2){
+    actions.push('Set one daily anchor: before opening your laptop each morning, take one breath and ask "Who is driving?" That\'s the entire practice. Five seconds of sovereignty.');
+  }
+
+  // Council balance
+  if(D.council.innovator.activity>=4 && D.council.maker.activity<=2){
+    actions.push('The Innovator needs a contained playground. Set a 30-minute Play Window (pure exploration, no output required), then park all ideas in a Parking Lot. Review them on Sunday.');
+  }
+
+  // Ensure at least 3 actions
+  if(actions.length<3){
+    actions.push('Do the Daily Council Check-In tonight: Who is driving right now? Is that the right Self for this moment? What does the neglected Self need?');
+  }
+
+  el.innerHTML = actions.map(a=>`<div class="action-item">${a}</div>`).join('');
+}
+
+// ============ PERSISTENCE ============
+function saveAssessment(){
+  const assessments = JSON.parse(localStorage.getItem('cos_assessments')||'[]');
+  const entry = {
+    id: new Date().toISOString(),
+    date: new Date().toLocaleDateString('en-GB'),
+    council: JSON.parse(JSON.stringify(D.council)),
+    shadows: JSON.parse(JSON.stringify(D.shadows)),
+    waves: JSON.parse(JSON.stringify(D.waves)),
+    compass: JSON.parse(JSON.stringify(D.compass)),
+    chair: JSON.parse(JSON.stringify(D.chair))
+  };
+  assessments.unshift(entry);
+  localStorage.setItem('cos_assessments', JSON.stringify(assessments));
+  alert('Assessment saved.');
+}
+
+function loadHistory(){
+  const assessments = JSON.parse(localStorage.getItem('cos_assessments')||'[]');
+  const el = document.getElementById('history-list');
+  if(!assessments.length){
+    el.innerHTML='<p style="color:var(--text3)">No saved assessments yet. Complete one to see it here.</p>';
+    return;
+  }
+  el.innerHTML = assessments.map((a,i)=>{
+    const chairAvg = Object.values(a.chair).reduce((s,v)=>s+v,0)/5;
+    const compassTotal = a.compass.north+a.compass.east+a.compass.south+a.compass.west;
+    const topShadow = Object.keys(a.shadows).reduce((x,k)=>{
+      const sc=(a.shadows[k].presence+a.shadows[k].blending)/2;
+      return sc>x.sc?{k,sc}:x;
+    },{k:'',sc:0});
+    return `<div class="history-item" onclick="loadAssessment(${i})">
+      <div class="date">${a.date}</div>
+      <div class="summary">
+        Wave: ${WAVE_LABELS[a.waves.current]||'--'} | Compass: ${compassTotal>0?'+':''}${compassTotal} | Chair: ${Math.round(chairAvg/5*100)}% | Top Shadow: ${SHADOW_LABELS[topShadow.k]||'--'} (${topShadow.sc.toFixed(1)})
+      </div>
+    </div>`;
+  }).join('');
+
+  // Update welcome link
+  const link = document.getElementById('history-link');
+  if(assessments.length){
+    link.innerHTML=`<button class="btn btn-secondary btn-sm" onclick="goTo(7)">View ${assessments.length} saved assessment${assessments.length>1?'s':''}</button>`;
+  }
+}
+
+function loadAssessment(idx){
+  const assessments = JSON.parse(localStorage.getItem('cos_assessments')||'[]');
+  const a = assessments[idx];
+  if(!a) return;
+  Object.assign(D.council, JSON.parse(JSON.stringify(a.council)));
+  Object.assign(D.shadows, JSON.parse(JSON.stringify(a.shadows)));
+  Object.assign(D.waves, JSON.parse(JSON.stringify(a.waves)));
+  Object.assign(D.compass, JSON.parse(JSON.stringify(a.compass)));
+  Object.assign(D.chair, JSON.parse(JSON.stringify(a.chair)));
+  goTo(6);
+  renderResults();
+  document.getElementById('results-date').textContent = a.date + ' (saved)';
+}
+
+function resetAndStart(){
+  Object.keys(D.council).forEach(k=>{D.council[k]={activity:3,influence:3,health:3}});
+  Object.keys(D.shadows).forEach(k=>{D.shadows[k]={presence:3,blending:3}});
+  D.waves={current:null,dominant:null,alignment:3};
+  D.compass={north:0,east:0,south:0,west:0};
+  Object.keys(D.chair).forEach(k=>{D.chair[k]=3});
+  // Reset UI sliders
+  document.querySelectorAll('input[type=range]').forEach(s=>{
+    const min=+s.min;
+    s.value=(min<0)?0:3;
+  });
+  document.querySelectorAll('.val').forEach(v=>{
+    const id=v.id.replace('v-','');
+    if(id.startsWith('north')||id.startsWith('east')||id.startsWith('south')||id.startsWith('west')) v.textContent='0';
+    else v.textContent='3';
+  });
+  document.querySelectorAll('.wave-card').forEach(c=>c.classList.remove('selected'));
+  goTo(0);
+}
+
+// ============ INIT ============
+loadHistory();
+</script>
+</body>
+</html>
