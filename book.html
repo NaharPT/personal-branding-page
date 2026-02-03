@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Council of Selves - You are not one person. You never were.</title>
+  <meta name="description" content="The Council of Selves - An Identity Operating System for leading the most complex team you'll ever manage: the one inside you. By Nuno Valerio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #fafafa;
+      --bg-white: #ffffff;
+      --bg-warm: #fdf8f3;
+      --bg-cool: #f0f7fa;
+      --ink: #0f0f1a;
+      --ink-secondary: #3d3d56;
+      --ink-muted: #6e6e82;
+      --ink-dim: #9e9eb0;
+      --cyan: #00bcd4;
+      --cyan-light: #b2ebf2;
+      --magenta: #e91e63;
+      --magenta-light: #f8bbd0;
+      --yellow: #ffc107;
+      --yellow-light: #fff9c4;
+      --orange: #ff6b35;
+      --orange-light: #ffe0cc;
+      --purple: #7c4dff;
+      --border: rgba(15, 15, 26, 0.06);
+      --border-hover: rgba(15, 15, 26, 0.12);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.02);
+      --shadow-md: 0 4px 20px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.03);
+      --shadow-lg: 0 10px 40px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+      --shadow-xl: 0 20px 60px rgba(0,0,0,0.1), 0 8px 24px rgba(0,0,0,0.06);
+      --radius: 20px;
+      --radius-sm: 12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4 { font-family: 'Space Grotesk', sans-serif; }
+
+    a { color: var(--cyan); text-decoration: none; transition: color 0.3s; }
+    a:hover { color: #0097a7; }
+
+    ::selection { background: rgba(0, 188, 212, 0.2); color: var(--ink); }
+
+    /* ============================================
+       PAINT SPLASH BLOBS
+       ============================================ */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.35;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.4s ease;
+      background: transparent;
+    }
+
+    nav.scrolled {
+      background: rgba(250, 250, 250, 0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--ink);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-logo span { color: var(--cyan); }
+
+    .nav-link {
+      color: var(--ink-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      position: relative;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
+      transition: width 0.3s;
+      border-radius: 2px;
+    }
+
+    .nav-link:hover { color: var(--ink); }
+    .nav-link:hover::after { width: 100%; }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-white);
+      padding: 6rem 2rem 4rem;
+    }
+
+    .hero-blobs {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .hero-blobs .blob:nth-child(1) {
+      width: 500px; height: 500px;
+      background: var(--cyan);
+      top: -10%; left: -5%;
+      opacity: 0.15;
+    }
+    .hero-blobs .blob:nth-child(2) {
+      width: 400px; height: 400px;
+      background: var(--magenta);
+      top: 20%; right: -8%;
+      opacity: 0.12;
+    }
+    .hero-blobs .blob:nth-child(3) {
+      width: 350px; height: 350px;
+      background: var(--yellow);
+      bottom: -5%; left: 30%;
+      opacity: 0.18;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -1.5px;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+
+    .hero-text .subhead {
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--ink-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-text .author {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink-muted);
+      margin-bottom: 2.5rem;
+      letter-spacing: 0.5px;
+    }
+
+    .hero-book-cover {
+      position: relative;
+    }
+
+    .book-cover-placeholder {
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--purple) 50%, var(--magenta) 100%);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-xl);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .book-cover-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><circle cx="50" cy="50" r="40" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="50" r="30" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="50" r="20" fill="rgba(255,255,255,0.05)"/></svg>');
+      opacity: 0.3;
+    }
+
+    .book-cover-placeholder h2 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .book-cover-placeholder .subtitle {
+      font-size: 0.9rem;
+      font-weight: 400;
+      text-align: center;
+      opacity: 0.9;
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.3px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan), #0097a7);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 188, 212, 0.35);
+      color: #fff;
+    }
+
+    /* ============================================
+       SECTION BASE
+       ============================================ */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      padding: 0.3rem 1rem;
+      border-radius: 50px;
+      background: linear-gradient(135deg, rgba(0,188,212,0.08), rgba(233,30,99,0.08));
+      color: var(--cyan);
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      letter-spacing: -0.5px;
+      color: var(--ink);
+    }
+
+    .section-subtitle {
+      color: var(--ink-muted);
+      font-size: 1.05rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .section-bg {
+      padding: 6rem 0;
+      position: relative;
+    }
+
+    .section-bg--warm { background: var(--bg-warm); }
+    .section-bg--cool { background: var(--bg-cool); }
+
+    .section-bg > section {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+
+    /* ============================================
+       FRAMEWORK PREVIEW
+       ============================================ */
+    .framework-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .framework-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .framework-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--card-accent, var(--cyan));
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+      transform-origin: left;
+    }
+
+    .framework-card:hover::before { transform: scaleX(1); }
+
+    .framework-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .framework-card:nth-child(1) { --card-accent: var(--cyan); }
+    .framework-card:nth-child(2) { --card-accent: var(--magenta); }
+    .framework-card:nth-child(3) { --card-accent: var(--purple); }
+
+    .framework-card h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--ink);
+    }
+
+    .framework-card p {
+      color: var(--ink-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       WHAT YOU'LL LEARN
+       ============================================ */
+    .learn-list {
+      max-width: 800px;
+      margin: 0 auto;
+      list-style: none;
+    }
+
+    .learn-list li {
+      padding: 1.2rem 1.5rem 1.2rem 3.5rem;
+      margin-bottom: 1rem;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 1.02rem;
+      color: var(--ink-secondary);
+      position: relative;
+      transition: all 0.3s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .learn-list li:hover {
+      transform: translateX(5px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .learn-list li::before {
+      content: '\2713';
+      position: absolute;
+      left: 1.2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: var(--cyan);
+    }
+
+    /* ============================================
+       WHO THIS IS FOR
+       ============================================ */
+    .who-for-card {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 3rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .who-for-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta), var(--yellow), var(--orange));
+    }
+
+    .who-for-card p {
+      font-size: 1.15rem;
+      font-style: italic;
+      color: var(--ink-secondary);
+      line-height: 1.9;
+      text-align: center;
+    }
+
+    /* ============================================
+       SIGNUP SECTION (LEAD MAGNET)
+       ============================================ */
+    .signup-section {
+      background: linear-gradient(135deg, rgba(0,188,212,0.06), rgba(233,30,99,0.06));
+      border: 2px solid var(--cyan);
+      border-radius: var(--radius);
+      padding: 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .signup-section h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--ink);
+      text-align: center;
+    }
+
+    .signup-tagline {
+      font-size: 1.1rem;
+      color: var(--ink-secondary);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .toolkit-contents {
+      background: var(--bg-white);
+      border-radius: var(--radius-sm);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .toolkit-contents h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .toolkit-contents ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .toolkit-contents li {
+      padding: 0.6rem 0 0.6rem 1.8rem;
+      color: var(--ink-secondary);
+      font-size: 0.95rem;
+      position: relative;
+    }
+
+    .toolkit-contents li::before {
+      content: '\2022';
+      position: absolute;
+      left: 0;
+      color: var(--cyan);
+      font-size: 1.3rem;
+    }
+
+    .signup-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-hover);
+      background: var(--bg-white);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.1);
+    }
+
+    .form-input::placeholder {
+      color: var(--ink-dim);
+    }
+
+    .privacy-note {
+      font-size: 0.8rem;
+      color: var(--ink-dim);
+      text-align: center;
+      margin-top: 0.5rem;
+    }
+
+    .form-success {
+      text-align: center;
+      padding: 2rem;
+      background: rgba(0, 188, 212, 0.1);
+      border: 2px solid var(--cyan);
+      border-radius: var(--radius-sm);
+      color: var(--cyan);
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    /* ============================================
+       ABOUT AUTHOR
+       ============================================ */
+    .author-section {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .author-section p {
+      font-size: 1.05rem;
+      color: var(--ink-secondary);
+      margin-bottom: 1.5rem;
+      line-height: 1.8;
+    }
+
+    /* ============================================
+       YOUTUBE SECTION
+       ============================================ */
+    .youtube-card {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+      transition: all 0.3s;
+    }
+
+    .youtube-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .youtube-card h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--ink);
+    }
+
+    .youtube-card p {
+      font-size: 1rem;
+      color: var(--ink-secondary);
+      margin-bottom: 1.5rem;
+    }
+
+    .youtube-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 2rem;
+      border-radius: var(--radius-sm);
+      background: #ff0000;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .youtube-link:hover {
+      background: #cc0000;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 0, 0, 0.3);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      text-align: center;
+      padding: 3rem 2rem;
+      background: var(--bg-warm);
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--ink-muted);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .footer p {
+      font-size: 0.8rem;
+      color: var(--ink-dim);
+      margin-top: 1rem;
+    }
+
+    .disclaimer {
+      font-size: 0.75rem;
+      font-style: italic;
+      color: var(--ink-dim);
+      margin-top: 1.5rem;
+    }
+
+    /* ============================================
+       SCROLL ANIMATIONS
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 900px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .framework-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      section { padding: 4rem 1.2rem; }
+      .section-bg { padding: 4rem 0; }
+
+      .hero { padding: 5rem 1.2rem 3rem; }
+
+      .signup-section { padding: 2rem 1.5rem; }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .who-for-card { padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ====== NAVIGATION ====== -->
+  <nav id="navbar">
+    <a href="/" class="nav-logo">N<span>.</span>V</a>
+    <a href="/" class="nav-link">Back to Main Site</a>
+  </nav>
+
+  <!-- ====== HERO ====== -->
+  <header class="hero">
+    <div class="hero-blobs">
+      <div class="blob"></div>
+      <div class="blob"></div>
+      <div class="blob"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>You are not one person. You never were.</h1>
+        <p class="subhead">The Council of Selves is an Identity Operating System for leading the most complex team you'll ever manage -- the one inside you.</p>
+        <p class="author">By Nuno Valerio</p>
+        <a href="#signup" class="btn btn-primary">Get Your Free IOS Quick-Start Kit</a>
+      </div>
+      <div class="hero-book-cover">
+        <div class="book-cover-placeholder">
+          <h2>The Council of Selves</h2>
+          <p class="subtitle">An Identity Operating System</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== FRAMEWORK PREVIEW ====== -->
+  <section>
+    <div class="section-header reveal">
+      <div class="section-label">The Framework</div>
+      <h2 class="section-title">The 3 Pillars of the IOS</h2>
+      <p class="section-subtitle">A complete operating system for identity leadership</p>
+    </div>
+    <div class="framework-grid">
+      <div class="framework-card reveal">
+        <h3>The Council</h3>
+        <p>Name your inner players. Understand what each one wants. Stop letting the loudest voice win by default.</p>
+      </div>
+      <div class="framework-card reveal reveal-delay-1">
+        <h3>The Waves</h3>
+        <p>Map your energy states. Know when to push, when to rest, and when you're lying to yourself about being fine.</p>
+      </div>
+      <div class="framework-card reveal reveal-delay-2">
+        <h3>The Compass</h3>
+        <p>Score every major decision against four directions: Meaning, People, Body, and Craft.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== WHAT YOU'LL LEARN ====== -->
+  <div class="section-bg section-bg--warm">
+    <section>
+      <div class="section-header reveal">
+        <div class="section-label">What You'll Learn</div>
+        <h2 class="section-title">Inside the Book</h2>
+        <p class="section-subtitle">Practical frameworks for inner leadership</p>
+      </div>
+      <ul class="learn-list">
+        <li class="reveal">Recognize which "self" is driving -- and take back the chair</li>
+        <li class="reveal reveal-delay-1">Make decisions that don't collapse under pressure or regret</li>
+        <li class="reveal reveal-delay-2">Lead others without losing yourself in the process</li>
+        <li class="reveal reveal-delay-3">Navigate parenthood, partnership, and career without choosing between them</li>
+        <li class="reveal">Build a personal Codex -- a living document of who you are becoming</li>
+      </ul>
+    </section>
+  </div>
+
+  <!-- ====== WHO THIS IS FOR ====== -->
+  <section>
+    <div class="section-header reveal">
+      <div class="section-label">Who This Is For</div>
+      <h2 class="section-title">Built for Multiplicity</h2>
+    </div>
+    <div class="who-for-card reveal">
+      <p>You've been called "intense." You've been told you're "too much." You carry more ideas than you can execute, more roles than you can sustain, and more ambition than any single identity can hold. This book was written for you.</p>
+    </div>
+  </section>
+
+  <!-- ====== FREE TOOLKIT / SIGNUP ====== -->
+  <div class="section-bg section-bg--cool">
+    <section id="signup">
+      <div class="section-header reveal">
+        <div class="section-label">Free Toolkit</div>
+        <h2 class="section-title">Start Your Council Today</h2>
+      </div>
+      <div class="signup-section reveal">
+        <h3>Get the IOS Quick-Start Kit</h3>
+        <p class="signup-tagline">6 reference cards and worksheets to begin your inner council practice</p>
+
+        <div class="toolkit-contents">
+          <h4>What's Included:</h4>
+          <ul>
+            <li>The 6 Core Selves Reference Card</li>
+            <li>The 4 Wave States Reference Card</li>
+            <li>The Compass Scoring Worksheet</li>
+            <li>The Daily Council Check-In Template</li>
+            <li>The 5-Minute Coherence Ritual Guide</li>
+            <li>Quick-Reference IOS Summary</li>
+          </ul>
+        </div>
+
+        <form class="signup-form" id="signupForm">
+          <div class="form-row">
+            <input type="text" name="name" placeholder="Your first name" required class="form-input">
+            <input type="email" name="email" placeholder="Your email" required class="form-input">
+          </div>
+          <button type="submit" class="btn btn-primary">Send Me the Toolkit</button>
+          <p class="privacy-note">No spam. One welcome email, then weekly insights. Unsubscribe anytime.</p>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <!-- ====== ABOUT AUTHOR ====== -->
+  <section>
+    <div class="section-header reveal">
+      <div class="section-label">About the Author</div>
+      <h2 class="section-title">Who Wrote This</h2>
+    </div>
+    <div class="author-section reveal">
+      <p>Nuno Valerio is a Head of Innovation in healthcare, a father of three, and someone who has spent two decades leading teams while trying to lead himself. He has lived in four countries, speaks five languages, and has managed to be simultaneously too structured and too chaotic his entire life.</p>
+      <p>This book is the operating system he wished he had twenty years ago.</p>
+    </div>
+  </section>
+
+  <!-- ====== YOUTUBE CHANNEL ====== -->
+  <div class="section-bg section-bg--warm">
+    <section>
+      <div class="section-header reveal">
+        <div class="section-label">Watch the Channel</div>
+        <h2 class="section-title">Leaders of the Multiverse</h2>
+      </div>
+      <div class="youtube-card reveal">
+        <h3>Explore Leadership Through Story</h3>
+        <p>Leaders of the Multiverse explores leadership lessons hidden in sci-fi, fantasy, and the stories that shaped us.</p>
+        <a href="https://www.youtube.com/@LeadersOfTheMultiverse" target="_blank" class="youtube-link">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#000"/></svg>
+          Subscribe on YouTube
+        </a>
+        <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--ink-dim);">New episodes weekly. Subscribe for the journey.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="/">nunovalerio.com</a>
+      <a href="https://www.linkedin.com/in/nunovalerio/" target="_blank">LinkedIn</a>
+      <a href="https://www.youtube.com/@LeadersOfTheMultiverse" target="_blank">YouTube</a>
+      <a href="https://github.com/naharpt" target="_blank">GitHub</a>
+      <a href="mailto:nf.valerio@gmail.com">Email</a>
+    </div>
+    <p>Nuno Galante Valerio &middot; 2026</p>
+    <p class="disclaimer">Not medical or therapeutic advice. The Council of Selves is a personal development framework.</p>
+  </footer>
+
+  <script>
+    /* ============================================
+       SCROLL: NAV BACKGROUND
+       ============================================ */
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    /* ============================================
+       SCROLL: REVEAL ANIMATIONS
+       ============================================ */
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(el => observer.observe(el));
+
+    /* ============================================
+       SMOOTH SCROLL FOR INTERNAL LINKS
+       ============================================ */
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    /* ============================================
+       SIGNUP FORM HANDLER
+       TODO: Replace with Beehiiv integration
+       ============================================ */
+    const signupForm = document.getElementById('signupForm');
+    signupForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = signupForm.querySelector('[name="name"]').value;
+      const email = signupForm.querySelector('[name="email"]').value;
+
+      // Store in localStorage as backup
+      const signups = JSON.parse(localStorage.getItem('book_funnel_signups') || '[]');
+      signups.push({
+        name: name,
+        email: email,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem('book_funnel_signups', JSON.stringify(signups));
+
+      // Show success message
+      const formContainer = signupForm.parentElement;
+      formContainer.innerHTML = '<div class="form-success">Success! Check your email for the IOS Quick-Start Kit. (Beehiiv integration pending)</div>';
+    });
+  </script>
+
+</body>
+</html>
