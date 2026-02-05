@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IOS Quick-Start Kit - The Council of Selves</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a1a;
+            --text-light: #e8e8f0;
+            --gold: #D4AF37;
+            --teal: #2DD4BF;
+            --border-subtle: rgba(212, 175, 55, 0.2);
+            --card-bg: rgba(20, 20, 40, 0.6);
+        }
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            font-size: 11pt;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20mm;
+            margin: 0 auto;
+            position: relative;
+            page-break-after: always;
+            background: var(--bg-dark);
+        }
+
+        .page:last-child {
+            page-break-after: auto;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--gold);
+            margin-bottom: 0.5em;
+            font-weight: 700;
+        }
+
+        h1 {
+            font-size: 2.8em;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-top: 1em;
+            margin-bottom: 0.6em;
+        }
+
+        h3 {
+            font-size: 1.3em;
+            margin-top: 0.8em;
+            color: var(--teal);
+        }
+
+        h4 {
+            font-size: 1.1em;
+            color: var(--gold);
+        }
+
+        p {
+            margin-bottom: 0.8em;
+        }
+
+        strong {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        em {
+            color: var(--teal);
+            font-style: italic;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 1.2em;
+            margin: 1em 0;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 15mm;
+            left: 20mm;
+            right: 20mm;
+            text-align: center;
+            font-size: 9pt;
+            color: rgba(232, 232, 240, 0.5);
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 8px;
+        }
+
+        /* Cover Page */
+        .cover {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 257mm;
+        }
+
+        .cover h1 {
+            font-size: 3.5em;
+            margin-bottom: 0.2em;
+            background: linear-gradient(135deg, var(--gold), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cover .subtitle {
+            font-size: 1.5em;
+            color: var(--teal);
+            margin-bottom: 1em;
+            font-weight: 300;
+        }
+
+        .cover .author {
+            font-size: 1.2em;
+            color: var(--text-light);
+            margin-top: 1em;
+            font-weight: 400;
+        }
+
+        .cover .kit-title {
+            font-size: 2em;
+            color: var(--gold);
+            margin-top: 2em;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            background: rgba(212, 175, 55, 0.1);
+            border-left: 4px solid var(--gold);
+            padding: 1em;
+            margin: 1em 0;
+            font-size: 10pt;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1em 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-subtle);
+        }
+
+        th {
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--gold);
+            font-weight: 600;
+            padding: 0.8em;
+            text-align: left;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        td {
+            padding: 0.8em;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Worksheet areas */
+        .worksheet-line {
+            border-bottom: 1px dotted rgba(45, 212, 191, 0.4);
+            min-height: 30px;
+            margin: 0.5em 0;
+            padding: 0.3em 0;
+        }
+
+        .fill-in {
+            display: inline-block;
+            border-bottom: 1px dotted var(--teal);
+            min-width: 300px;
+            margin: 0 0.5em;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 1.5em;
+            margin-bottom: 1em;
+        }
+
+        li {
+            margin-bottom: 0.4em;
+        }
+
+        /* HR styling */
+        hr {
+            border: none;
+            border-top: 1px solid var(--border-subtle);
+            margin: 1.5em 0;
+        }
+
+        /* Voice examples */
+        .voice {
+            font-style: italic;
+            color: var(--teal);
+            font-size: 1.05em;
+        }
+
+        /* Section markers */
+        .section-marker {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5em;
+        }
+
+        /* Print-specific rules */
+        @media print {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            .page {
+                margin: 0;
+                box-shadow: none;
+            }
+
+            .page-break {
+                page-break-before: always;
+            }
+        }
+
+        /* Content spacing */
+        .content-section {
+            margin-bottom: 1.5em;
+        }
+
+        .indent {
+            margin-left: 1.5em;
+        }
+
+        /* Example boxes */
+        .example {
+            background: rgba(45, 212, 191, 0.1);
+            border-left: 3px solid var(--teal);
+            padding: 0.8em;
+            margin: 1em 0;
+            font-size: 10pt;
+        }
+
+        .example strong {
+            color: var(--teal);
+        }
+    </style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="page cover">
+    <h1>The Council of Selves</h1>
+    <div class="subtitle">An Identity Operating System for the Age of AI</div>
+    <div class="author">by Nuno Valério</div>
+    <div class="kit-title">IOS Quick-Start Kit</div>
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- PAGE 1: INTRODUCTION -->
+<div class="page page-break">
+    <h1>IOS Quick-Start Kit</h1>
+    <p style="font-size: 1.1em; color: var(--teal); margin-bottom: 1em;">From <em>The Council of Selves</em> by Nuno Valério</p>
+
+    <div class="disclaimer">
+        <strong>DISCLAIMER:</strong> This is a personal development framework, not therapy or medical advice. If you're struggling with mental health concerns, please consult a qualified professional.
+    </div>
+
+    <hr>
+
+    <h2>Introduction: The Operating System You Didn't Know You Were Running</h2>
+
+    <div class="content-section">
+        <p>You're not one person. You never were.</p>
+
+        <p>Right now, there's a strategist inside you planning three moves ahead. A protector scanning for threats. A creator itching to break something open and see how it works. A wounded part carrying an old hurt you've been trying to outrun for years.</p>
+
+        <p>Most of the time, these parts argue. They compete for resources. They override each other's decisions. And you -- the conscious "you" trying to make it through the day -- are left feeling fragmented, guilty, or exhausted.</p>
+
+        <p>This kit gives you the foundational tools from <em>The Council of Selves</em> -- a complete Identity Operating System (IOS) for leading the most complex team you'll ever manage: the one inside you.</p>
+    </div>
+
+    <div class="card">
+        <h3>What you'll find in this kit:</h3>
+        <ul>
+            <li>Reference cards for your inner Council and energy states</li>
+            <li>A practical decision-making worksheet</li>
+            <li>A daily check-in template</li>
+            <li>A 5-minute ritual for when you feel fragmented</li>
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>What this kit is NOT:</h3>
+        <p>This is a preview. It gives you the tools to start. The book gives you the complete system -- how to apply this to leadership, parenting, partnership, meaning, and the brutal question of what to do when the system breaks.</p>
+    </div>
+
+    <div class="content-section">
+        <p>If you've been called "too much," if you carry more ideas than you can execute, if you've read the self-help books and still feel like they're written for someone simpler than you -- welcome. This was built for you.</p>
+
+        <p><strong>Let's begin.</strong></p>
+    </div>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- PAGE 2: THE 6 CORE SELVES -->
+<div class="page page-break">
+    <div class="section-marker">Page 2</div>
+    <h2>The 6 Core Selves Reference Card</h2>
+
+    <h3>Your Council of Selves</h3>
+    <p>Your inner world is not chaos. It's a boardroom. The voices aren't random -- they're distinct members of your Council, each with a role, a drive, and a shadow.</p>
+    <p>Here are the 6 archetypal selves at the table:</p>
+
+    <hr>
+
+    <div class="card">
+        <h3>1. THE STRATEGIST (The Architect)</h3>
+        <p><strong>Core Drive:</strong> Order, clarity, long-term structural integrity</p>
+        <p class="voice">"First, we need a plan."</p>
+
+        <p><strong>When Dominant:</strong></p>
+        <p>You design brilliant systems. You think three steps ahead. You build the container before you start the work. You're the one who creates the Notion database, maps the investment strategy, architects the home automation system.</p>
+
+        <p><strong>When Suppressed:</strong></p>
+        <p>Chaos without purpose. You start ten things and finish none. The Maker runs wild without direction, and you wake up covered in sawdust with no idea what you were building or why.</p>
+    </div>
+
+    <div class="card">
+        <h3>2. THE PROTECTOR (The Guardian)</h3>
+        <p><strong>Core Drive:</strong> Safety, survival, preventing pain before it arrives</p>
+        <p class="voice">"Be careful. What if it goes wrong?"</p>
+
+        <p><strong>When Dominant:</strong></p>
+        <p>You see risks no one else notices. You run the pre-mortem. You save the team from walking into a disaster. You're the reason the project didn't blow up, even if no one thanks you for it.</p>
+
+        <p><strong>When Suppressed:</strong></p>
+        <p>Recklessness. You ignore red flags, override your gut, and later wonder why you didn't listen to the quiet voice that said "this isn't right." The Protector doesn't disappear when you silence it -- it escalates into anxiety, insomnia, or a full system shutdown.</p>
+    </div>
+
+    <div class="card">
+        <h3>3. THE CREATOR (The Maker)</h3>
+        <p><strong>Core Drive:</strong> Flow, progress, the joy of making something exist that didn't before</p>
+        <p class="voice">"Just let me work."</p>
+
+        <p><strong>When Dominant:</strong></p>
+        <p>You enter flow and lose track of time. You build, tinker, write, design. This is the part of you that actually produces value in the external world. Without the Maker, everything is theory. The Maker is proof that you exist.</p>
+
+        <p><strong>When Suppressed:</strong></p>
+        <p>Restlessness. Frustration. You feel like a caged animal. You start scrolling, shopping, binge-watching -- anything to fill the void left by the work you're not doing. The Maker doesn't ask for much: just time, space, and permission to create.</p>
+    </div>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- PAGE 2 CONTINUED -->
+<div class="page page-break">
+    <div class="section-marker">Page 2 (continued)</div>
+
+    <div class="card">
+        <h3>4. THE CARETAKER (The Relational Self)</h3>
+        <p><strong>Core Drive:</strong> Connection, presence, empathy</p>
+        <p class="voice">"What do they need right now?"</p>
+
+        <p><strong>When Dominant:</strong></p>
+        <p>You attune to the people you love. You co-regulate. You hold space without trying to fix. You're the reason your partner feels seen, your child feels safe, your team trusts you. This is leadership as presence, not performance.</p>
+
+        <p><strong>When Suppressed:</strong></p>
+        <p>Isolation. Loneliness disguised as productivity. You optimize your life for output and wonder why it feels hollow. The Caretaker reminds you that relationships are not tasks to complete -- they are the texture of a life worth living.</p>
+    </div>
+
+    <div class="card">
+        <h3>5. THE EXILE (The Wounded One)</h3>
+        <p><strong>Core Drive:</strong> Healing, being seen, having the old hurt acknowledged</p>
+        <p class="voice">(Often silent. When it speaks: "This isn't fair. No one sees what I carry.")</p>
+
+        <p><strong>When Dominant:</strong></p>
+        <p>Raw emotional truth surfaces. You feel everything at once. This part doesn't argue logically -- it speaks through the body. A tightness in the chest. A lump in the throat. A disproportionate reaction to a small trigger. The Exile carries the pain the rest of the system is too busy to face.</p>
+
+        <p><strong>When Suppressed:</strong></p>
+        <p>Sabotage. The 2 AM email you shouldn't send. The impulsive decision that blows up a relationship. The Exile will not be ignored. If you don't give it witness, it will hijack the microphone and burn the meeting down.</p>
+    </div>
+
+    <div class="card">
+        <h3>6. THE SELF-AS-LEADER (The Chair)</h3>
+        <p><strong>Core Drive:</strong> Integration, coherence, making the final call</p>
+        <p class="voice">"Who is driving right now?"</p>
+
+        <p><strong>This is not a Self. This is a stance.</strong></p>
+
+        <p>The Chair is the meta-position -- the part of you that can observe the whole table without sitting at any one seat. It doesn't argue with the panic or dismiss the ambition. It simply asks: <em>What does the system need right now?</em></p>
+
+        <p>The Chair is calm, measured, compassionate but firm. It's the voice you hear after you've taken three breaths. No urgency. No judgment. Just clarity.</p>
+
+        <p><strong>When the Chair is absent:</strong></p>
+        <p>The loudest voice wins. The Protector vetoes everything. The Maker ignores the body's signals and works until 2 AM. The Exile fires off the email. The system fragments.</p>
+
+        <p><strong>When the Chair is present:</strong></p>
+        <p>The Council becomes a team. Each voice is heard. Decisions are made with eyes open. You lead yourself the way you'd lead a high-performing, high-conflict team -- with presence, structure, and respect for what each member brings.</p>
+    </div>
+
+    <hr>
+
+    <div class="card">
+        <h3>Your Assignment:</h3>
+        <p>Which of these selves showed up strongest today? Which one have you been suppressing? Write their names down. You can't lead what you can't name.</p>
+    </div>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- PAGE 3: THE 4 WAVE STATES -->
+<div class="page page-break">
+    <div class="section-marker">Page 3</div>
+    <h2>The 4 Wave States Reference Card</h2>
+
+    <h3>Your Energy Runs on Tides</h3>
+    <p>Energy and clarity don't always move together. You can be wired but scattered. Calm but drained. Exhausted but sharp. Most people treat energy as binary -- "on" or "off." The Waves framework maps four distinct states, each with its own rules.</p>
+    <p>Knowing which Wave you're riding changes what you should be doing -- not what you wish you were doing.</p>
+
+    <hr>
+
+    <div class="card">
+        <h3>WAVE 1: SURGE (High Energy, High Clarity)</h3>
+        <p><strong>The peak performance state.</strong></p>
+
+        <p><strong>Physical Signals:</strong></p>
+        <p>Alert, focused, physically alive. Your body feels ready. Your mind is sharp. You could run a meeting, write a chapter, solve a hard problem.</p>
+
+        <p><strong>Mental Signals:</strong></p>
+        <p>Thoughts are crisp. Decisions come easily. You see the through-line. This is the state where your best work happens.</p>
+
+        <p><strong>What To Do:</strong></p>
+        <ul>
+            <li>Tackle your hardest cognitive work (strategy, writing, deep problem-solving).</li>
+            <li>Make important decisions -- the Chair has full access to the Council.</li>
+            <li>Schedule high-stakes meetings or difficult conversations.</li>
+        </ul>
+
+        <p><strong>What NOT To Do:</strong></p>
+        <p>Don't waste this state on email, admin work, or low-friction tasks. Surge is rare. Treat it like rocket fuel -- use it on what matters most.</p>
+    </div>
+
+    <div class="card">
+        <h3>WAVE 2: FLOW (Moderate Energy, High Ease)</h3>
+        <p><strong>The sustainable creative state.</strong></p>
+
+        <p><strong>Physical Signals:</strong></p>
+        <p>Calm, present, grounded. Not wired, not drained. Your body is neutral. You could work for hours without noticing.</p>
+
+        <p><strong>Mental Signals:</strong></p>
+        <p>Thoughts drift and connect. Ideas emerge without forcing. You're not pushing -- you're receiving. This is where creativity lives.</p>
+
+        <p><strong>What To Do:</strong></p>
+        <ul>
+            <li>Creative work, brainstorming, exploratory writing.</li>
+            <li>Long conversations with people you trust.</li>
+            <li>Learning something new without pressure to perform.</li>
+        </ul>
+
+        <p><strong>What NOT To Do:</strong></p>
+        <p>Don't force hard decisions or high-stakes execution. Flow is generative, not directive. Let it wander. Trust the process.</p>
+    </div>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- PAGE 3 CONTINUED -->
+<div class="page page-break">
+    <div class="section-marker">Page 3 (continued)</div>
+
+    <div class="card">
+        <h3>WAVE 3: DRIFT (Low Energy, Low Clarity)</h3>
+        <p><strong>Recovery or disengagement.</strong></p>
+
+        <p><strong>Physical Signals:</strong></p>
+        <p>Heavy, sluggish, foggy. Your body wants rest, but you're not sure if it's tiredness or avoidance. You're scrolling, snacking, staring at the screen without seeing it.</p>
+
+        <p><strong>Mental Signals:</strong></p>
+        <p>Thoughts are muddy. Decisions feel hard. You can't tell if you're tired or just stuck. This state is either necessary recovery or a signal that something deeper is off.</p>
+
+        <p><strong>What To Do:</strong></p>
+        <ul>
+            <li>Rest. Nap. Walk. Stare out the window.</li>
+            <li>Low-stakes tasks: cleaning, organizing, light admin.</li>
+            <li>Ask the Chair: "Is this recovery, or is this avoidance?"</li>
+        </ul>
+
+        <p><strong>What NOT To Do:</strong></p>
+        <p>Don't make big decisions. Don't start new projects. Don't ignore this state for too long -- chronic Drift is a symptom, not a personality trait.</p>
+    </div>
+
+    <div class="card">
+        <h3>WAVE 4: STORM (High Energy, Low Clarity)</h3>
+        <p><strong>Emotional turbulence. Reactivity.</strong></p>
+
+        <p><strong>Physical Signals:</strong></p>
+        <p>Wired, agitated, jittery. Your body is running hot -- racing heart, tight chest, shallow breath. You feel like you need to DO SOMETHING, but you're not sure what.</p>
+
+        <p><strong>Mental Signals:</strong></p>
+        <p>Thoughts loop. You can't let it go. You rehearse the argument, draft the email, replay the conversation. Storm is high energy with no direction. It's a thunderstorm in a bottle.</p>
+
+        <p><strong>What To Do:</strong></p>
+        <ul>
+            <li>Move the energy: run, lift, walk fast, swim.</li>
+            <li>Journal without editing. Get it out of your head and onto the page.</li>
+            <li>Call the Chair: "What is this energy trying to protect me from?"</li>
+        </ul>
+
+        <p><strong>What NOT To Do:</strong></p>
+        <p><strong>DO NOT SEND THE EMAIL.</strong> Do not make decisions. Do not engage in conflict. Storm is not clarity -- it's activation. The 24-hour rule exists for this state: no decisions, no communications until the storm passes.</p>
+    </div>
+
+    <hr>
+
+    <div class="card">
+        <h3>The Wave Transition Map</h3>
+        <p>You will cycle through all four states in a single day, a single week, or a single project. This is normal. The goal is not to stay in Surge forever. The goal is to know where you are and act accordingly.</p>
+
+        <p><strong>Common transitions:</strong></p>
+        <ul>
+            <li>Surge &gt; Flow (natural decline, still productive)</li>
+            <li>Flow &gt; Drift (energy depletes, clarity fades)</li>
+            <li>Drift &gt; Storm (suppressed emotion surfaces)</li>
+            <li>Storm &gt; Surge (after the release, clarity returns)</li>
+        </ul>
+
+        <p><strong>The Chair's job:</strong></p>
+        <p>Observe the Wave. Name it. Adjust the plan. Don't fight the tide -- navigate it.</p>
+    </div>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- PAGE 4: THE COMPASS -->
+<div class="page page-break">
+    <div class="section-marker">Page 4</div>
+    <h2>The Compass Scoring Worksheet</h2>
+
+    <h3>The 4-Direction Decision Framework</h3>
+    <p>Every decision is a negotiation between four forces. The Compass ensures none of them wins by default.</p>
+
+    <hr>
+
+    <div class="card">
+        <h3>THE FOUR DIRECTIONS</h3>
+
+        <p><strong>NORTH: Meaning &amp; Purpose</strong></p>
+        <p><em>Does this decision align with what matters most?</em></p>
+        <p>Does it move me toward the life I'm building, or away from it? Does it honor my North Star, or does it just feel urgent?</p>
+
+        <p><strong>EAST: People &amp; Relationships</strong></p>
+        <p><em>What does this decision cost or give to the people I love?</em></p>
+        <p>How does this affect my partner, my children, my team, my closest relationships? Is this a trade I can live with?</p>
+
+        <p><strong>SOUTH: Body &amp; Capacity</strong></p>
+        <p><em>Can my body sustain this?</em></p>
+        <p>Do I have the energy, the health, the margin? Or am I already running on fumes and pretending I'm fine?</p>
+
+        <p><strong>WEST: Craft &amp; Contribution</strong></p>
+        <p><em>Does this decision let me do my best work?</em></p>
+        <p>Does it use my strengths? Does it move my craft forward, or does it dilute it?</p>
+    </div>
+
+    <hr>
+
+    <div class="card">
+        <h3>THE SCORING SYSTEM</h3>
+
+        <p>For each decision, score each direction from <strong>-3 to +3</strong>:</p>
+
+        <ul>
+            <li><strong>+3:</strong> Strongly aligned. This direction says YES.</li>
+            <li><strong>+2:</strong> Moderately aligned.</li>
+            <li><strong>+1:</strong> Slightly aligned.</li>
+            <li><strong>0:</strong> Neutral.</li>
+            <li><strong>-1:</strong> Slight misalignment.</li>
+            <li><strong>-2:</strong> Moderate misalignment.</li>
+            <li><strong>-3:</strong> VETO. This direction says STOP.</li>
+        </ul>
+
+        <p><strong>THE RULE:</strong></p>
+        <p>If any direction scores <strong>-3</strong>, the decision is vetoed. No exceptions. A +3 in one direction does not override a -3 in another. The Compass does not allow you to sacrifice one part of your life to maximize another.</p>
+    </div>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- PAGE 4 CONTINUED - SCORING GRID -->
+<div class="page page-break">
+    <div class="section-marker">Page 4 (continued)</div>
+
+    <h3>DECISION SCORING GRID</h3>
+
+    <p><strong>Decision I'm Facing:</strong></p>
+    <div class="worksheet-line"></div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Direction</th>
+                <th style="width: 120px;">Score (-3 to +3)</th>
+                <th>Notes</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>North (Meaning)</strong></td>
+                <td><div class="worksheet-line"></div></td>
+                <td><div class="worksheet-line"></div></td>
+            </tr>
+            <tr>
+                <td><strong>East (People)</strong></td>
+                <td><div class="worksheet-line"></div></td>
+                <td><div class="worksheet-line"></div></td>
+            </tr>
+            <tr>
+                <td><strong>South (Body)</strong></td>
+                <td><div class="worksheet-line"></div></td>
+                <td><div class="worksheet-line"></div></td>
+            </tr>
+            <tr>
+                <td><strong>West (Craft)</strong></td>
+                <td><div class="worksheet-line"></div></td>
+                <td><div class="worksheet-line"></div></td>
+            </tr>
+            <tr style="background: rgba(212, 175, 55, 0.1);">
+                <td><strong>Total</strong></td>
+                <td><div class="worksheet-line"></div></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h4>Interpretation:</h4>
+        <ul>
+            <li><strong>Total &gt; 6:</strong> Strong alignment. Proceed.</li>
+            <li><strong>Total 0-6:</strong> Mixed. Investigate the low-scoring directions.</li>
+            <li><strong>Total &lt; 0:</strong> Misalignment. Redesign or decline.</li>
+            <li><strong>Any -3:</strong> VETO. Do not proceed.</li>
+        </ul>
+    </div>
+
+    <hr>
+
+    <div class="example">
+        <h4>EXAMPLE DECISION: Taking a VP role at a high-growth startup</h4>
+
+        <table style="margin-top: 1em;">
+            <thead>
+                <tr>
+                    <th>Direction</th>
+                    <th style="width: 80px;">Score</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>North</strong></td>
+                    <td>+2</td>
+                    <td>Aligns with long-term career growth, but not core purpose.</td>
+                </tr>
+                <tr>
+                    <td><strong>East</strong></td>
+                    <td>-3</td>
+                    <td><strong>VETO.</strong> Would require relocation. Partner's career anchored here. Kids in stable school.</td>
+                </tr>
+                <tr>
+                    <td><strong>South</strong></td>
+                    <td>-2</td>
+                    <td>60-hour weeks. Already at capacity. Sleep would collapse.</td>
+                </tr>
+                <tr>
+                    <td><strong>West</strong></td>
+                    <td>+3</td>
+                    <td>Dream role. Perfect fit for my strengths.</td>
+                </tr>
+                <tr style="background: rgba(45, 212, 191, 0.1);">
+                    <td><strong>Total</strong></td>
+                    <td>0</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 1em;"><strong>Decision:</strong> DECLINE. East vetoes. No matter how perfect the role (West +3), a -3 in People overrides everything. The Compass prevents you from sacrificing your family for your career and regretting it five years later.</p>
+    </div>
+
+    <hr>
+
+    <div class="card">
+        <h3>YOUR TURN: Score 3 Decisions</h3>
+        <p>Use the grid above for three decisions you're currently facing. Start with a small one (saying yes to a project), then try a medium one (a job change), then a hard one (a life transition).</p>
+        <p>Watch for the pattern: Which direction do you tend to ignore? Which one always scores low? That's the direction demanding your attention.</p>
+    </div>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- PAGE 5: DAILY CHECK-IN -->
+<div class="page page-break">
+    <div class="section-marker">Page 5</div>
+    <h2>Daily Council Check-In Template</h2>
+
+    <h3>The 5-Minute Practice</h3>
+    <p>This is not journaling. This is a systems check. Five minutes. Four questions. One conscious choice.</p>
+
+    <p><strong>When to use it:</strong></p>
+    <ul>
+        <li>Every morning (before the day hijacks you)</li>
+        <li>Mid-day (when you feel fragmented)</li>
+        <li>Evening (to close the loop before tomorrow)</li>
+    </ul>
+
+    <hr>
+
+    <div class="card">
+        <h3>THE TEMPLATE</h3>
+
+        <p><strong>Date:</strong> <span class="fill-in"></span></p>
+
+        <hr>
+
+        <h4>1. Who showed up strongest today?</h4>
+        <p><em>(Which Self was dominant? Name it.)</em></p>
+
+        <div class="example">
+            <p><strong>Example:</strong></p>
+            <p><em>The Protector. I spent two hours catastrophizing about the project deadline.</em></p>
+        </div>
+
+        <p><strong>Your answer:</strong></p>
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+
+        <hr>
+
+        <h4>2. What Wave am I riding right now?</h4>
+        <p><em>(Surge / Flow / Drift / Storm?)</em></p>
+
+        <div class="example">
+            <p><strong>Example:</strong></p>
+            <p><em>Storm. High energy, no clarity. I want to fix everything at once.</em></p>
+        </div>
+
+        <p><strong>Your answer:</strong></p>
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+
+        <hr>
+
+        <h4>3. What does the Chair need to say?</h4>
+        <p><em>(If the Chair were mediating the Council right now, what would it say?)</em></p>
+
+        <div class="example">
+            <p><strong>Example:</strong></p>
+            <p><em>"Protector, thank you for the vigilance. The deadline is real, but the catastrophe is imaginary. Architect, create a one-page plan. Maker, execute it. We proceed with eyes open."</em></p>
+        </div>
+
+        <p><strong>Your answer:</strong></p>
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+
+    </div>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- PAGE 5 CONTINUED -->
+<div class="page page-break">
+    <div class="section-marker">Page 5 (continued)</div>
+
+    <div class="card">
+        <h4>4. One thing I'm choosing with eyes open today.</h4>
+        <p><em>(Not a to-do list. One conscious decision from the Chair position.)</em></p>
+
+        <div class="example">
+            <p><strong>Example:</strong></p>
+            <p><em>I'm choosing to say no to the 6 PM meeting. South vetoes -- my body needs rest more than my calendar needs another commitment.</em></p>
+        </div>
+
+        <p><strong>Your answer:</strong></p>
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+
+        <hr>
+
+        <h3>NOTES / REFLECTIONS</h3>
+        <p><em>(Optional. What surprised you? What pattern are you noticing?)</em></p>
+
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+    </div>
+
+    <hr>
+
+    <div class="card">
+        <h3>REPEAT DAILY</h3>
+        <p>This template is designed to be copied, printed, or saved digitally. The practice compounds. After two weeks, you'll start to see the patterns. After a month, the Chair's voice becomes automatic.</p>
+        <p><strong>You're not trying to eliminate the voices. You're learning to lead them.</strong></p>
+    </div>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- PAGE 6: COHERENCE RITUAL -->
+<div class="page page-break">
+    <div class="section-marker">Page 6</div>
+    <h2>The 5-Minute Coherence Ritual</h2>
+
+    <h3>When You Feel Fragmented</h3>
+    <p>You know the feeling. Too many voices. Too many directions. The Protector is panicking. The Maker is resentful. The Exile is activated. The Strategist is building a 47-step plan you'll never execute. You're in five meetings at once inside your own head.</p>
+    <p>This ritual is the emergency brake. Five steps. Five minutes. From fragmentation to coherence.</p>
+
+    <hr>
+
+    <div class="card">
+        <h3>THE RITUAL</h3>
+
+        <h4>STEP 1: PAUSE (30 seconds)</h4>
+        <p><em>Physical grounding.</em></p>
+
+        <p>Stop what you're doing. Literally. Close the laptop. Put down the phone. Stand up if you can.</p>
+
+        <p>Place one hand on your chest. One hand on your belly. Take three breaths -- slow in through the nose, slower out through the mouth. Feel your feet on the floor.</p>
+
+        <p>You're not calming down (yet). You're simply interrupting the loop.</p>
+
+        <hr>
+
+        <h4>STEP 2: NAME (60 seconds)</h4>
+        <p><em>Identify which selves are active.</em></p>
+
+        <p>Ask out loud or on paper: <strong>"Who is talking right now?"</strong></p>
+
+        <p>Don't analyze. Just name.</p>
+
+        <div class="example">
+            <p><strong>Example:</strong></p>
+            <p><em>The Protector is in full alarm mode. The Critic is saying this is a disaster. The Wounded One feels unseen. The Maker is frustrated because I can't focus.</em></p>
+        </div>
+
+        <p><strong>Your turn -- name at least three:</strong></p>
+
+        <p>1. <span class="fill-in"></span></p>
+        <p>2. <span class="fill-in"></span></p>
+        <p>3. <span class="fill-in"></span></p>
+
+        <hr>
+
+        <h4>STEP 3: LISTEN (90 seconds)</h4>
+        <p><em>What does each one need?</em></p>
+
+        <p>Go through each voice you named. Ask: <strong>"What do you need right now?"</strong></p>
+
+        <p>Don't judge the answer. Don't try to fix it yet. Just listen.</p>
+
+        <div class="example">
+            <p><strong>Example:</strong></p>
+            <ul>
+                <li><em>Protector: "I need to know we have a plan."</em></li>
+                <li><em>Critic: "I need proof that this isn't going to fail."</em></li>
+                <li><em>Wounded One: "I need someone to see how hard I'm trying."</em></li>
+                <li><em>Maker: "I need two uninterrupted hours."</em></li>
+            </ul>
+        </div>
+
+        <p><strong>Your turn:</strong></p>
+
+        <p>1. <span class="fill-in" style="min-width: 100px;"></span>: <span class="fill-in" style="min-width: 300px;"></span></p>
+        <p>2. <span class="fill-in" style="min-width: 100px;"></span>: <span class="fill-in" style="min-width: 300px;"></span></p>
+        <p>3. <span class="fill-in" style="min-width: 100px;"></span>: <span class="fill-in" style="min-width: 300px;"></span></p>
+    </div>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- PAGE 6 CONTINUED -->
+<div class="page page-break">
+    <div class="section-marker">Page 6 (continued)</div>
+
+    <div class="card">
+        <h4>STEP 4: CHAIR (60 seconds)</h4>
+        <p><em>What would the integrated self say?</em></p>
+
+        <p>Now step into the Chair position. You've heard the voices. You know what they need. The Chair doesn't solve everything -- it mediates.</p>
+
+        <p>Ask: <strong>"What does the system need most right now?"</strong></p>
+
+        <p>Then speak as the Chair. Out loud if you can. Use the third person if it helps create distance.</p>
+
+        <div class="example">
+            <p><strong>Example:</strong></p>
+            <p><em>"Protector, I hear the alarm. We are not in danger. Critic, your standards are valid, but they do not apply to a first draft. Wounded One, I see you. You are not alone. Maker, you will have your two hours -- but not right now. Right now, the system needs a 20-minute walk and a glass of water. Then we reconvene."</em></p>
+        </div>
+
+        <p><strong>Your turn -- write what the Chair would say:</strong></p>
+
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+
+        <hr>
+
+        <h4>STEP 5: CHOOSE (30 seconds)</h4>
+        <p><em>One action from the Chair position.</em></p>
+
+        <p>Not a plan. Not five things. One action. Right now.</p>
+
+        <div class="example">
+            <p><strong>Example:</strong></p>
+            <p><em>Take the walk. Drink the water. Close the Slack tab. Send the email that says "I need to reschedule." Open the document and write one paragraph.</em></p>
+        </div>
+
+        <p><strong>Your turn -- what's the one thing?</strong></p>
+
+        <div class="worksheet-line"></div>
+        <div class="worksheet-line"></div>
+    </div>
+
+    <hr>
+
+    <div class="card">
+        <h3>WHEN TO USE THIS RITUAL</h3>
+        <ul>
+            <li>When you're about to send an email you'll regret</li>
+            <li>When you can't decide and the voices are drowning each other out</li>
+            <li>When you feel like you're failing at everything simultaneously</li>
+            <li>When the Exile is activated and the Storm is building</li>
+            <li>When you've been productive all day but feel hollow</li>
+        </ul>
+
+        <h4>What to expect:</h4>
+        <p>This will not make the voices disappear. It will not give you perfect clarity. It will not solve the underlying problem.</p>
+
+        <p>What it will do: create 60 seconds of coherence. Enough space for the Chair to take the seat. Enough clarity to make one conscious choice instead of ten reactive ones.</p>
+
+        <p><strong>That's the difference between reacting and leading.</strong></p>
+    </div>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+<!-- FINAL PAGE: ABOUT THE BOOK -->
+<div class="page page-break">
+    <div class="section-marker">Final Page</div>
+    <h2>About the Book</h2>
+
+    <h3>This Kit Scratches the Surface</h3>
+    <p>You now have the foundational tools: the Council, the Waves, the Compass, and the Coherence Ritual.</p>
+
+    <p>But what happens when the system breaks? What happens when the Chair falls off the seat? How do you lead others when you're barely holding yourself together? How do you parent when your own Wounded One is activated? How do you love someone when two Councils collide?</p>
+
+    <p><strong><em>The Council of Selves</em> goes deep.</strong></p>
+
+    <p>The book is a complete Identity Operating System for the age of AI and acceleration. It's built for people who've been told they're "too much" -- too many interests, too many roles, too much intensity. People who've read the self-help books and found them reductive. People who don't want to simplify -- they want a system to manage complexity.</p>
+
+    <hr>
+
+    <div class="card">
+        <h3>WHAT THE BOOK COVERS</h3>
+
+        <h4>Part I: The Inner Architecture</h4>
+        <p>The full Council taxonomy. The neuroscience of the Waves. The Compass in high-stakes scenarios. The Chair under pressure.</p>
+
+        <h4>Part II: The Architecture of Life</h4>
+        <p>Leading teams when you carry a multiverse. Parenting as the ultimate leadership test. Love when two Councils collide. The body as your most honest advisor. The Architect and the Maker -- managing the friction between vision and execution.</p>
+
+        <h4>Part III: The Architecture of Becoming</h4>
+        <p>Meaning and mortality. Building your personal Codex (a living constitution for who you're becoming). Identity Loops (why growth is spiral, not linear). The Unanimous Vote (when all the voices finally align).</p>
+
+        <h4>Part IV: The New World</h4>
+        <p>Leading in the AI century. The three contracts between human and machine intelligence. How to stay coherent when the world accelerates past your ability to keep up.</p>
+    </div>
+
+    <hr>
+
+    <div class="card">
+        <h3>WHERE TO GET IT</h3>
+
+        <p><strong>Pre-order / Purchase:</strong></p>
+        <p>[Link placeholder: Amazon / nunovalerio.com/book]</p>
+
+        <p><strong>More from Nuno:</strong></p>
+        <p>YouTube: @LeadersOfTheMultiverse</p>
+        <p>(Geeky leadership. Systems thinking. The intersection of psychology, AI, and becoming a person you respect.)</p>
+    </div>
+
+    <hr>
+
+    <div class="card">
+        <h3>A FINAL WORD</h3>
+
+        <p>You are not broken. You are not "too much." You are a council.</p>
+
+        <p>The voices in your head are not noise -- they are members of the most important team you'll ever lead. They have wisdom. They have warnings. They have needs.</p>
+
+        <p>Your job is not to silence them. Your job is to chair the meeting.</p>
+
+        <p>This kit gave you the tools to start. The book gives you the system to sustain it.</p>
+
+        <p><strong>Welcome to the Council.</strong></p>
+    </div>
+
+    <hr>
+
+    <p style="text-align: center; margin-top: 2em; font-size: 1.1em;"><strong>Nuno Valério</strong></p>
+    <p style="text-align: center; color: var(--teal);">Author, Pharmacist, Systems Thinker, Parent, Leader</p>
+    <p style="text-align: center; font-style: italic; color: rgba(232, 232, 240, 0.7);">Holder of too many interests and maker of peace with that fact</p>
+
+    <hr style="margin-top: 2em;">
+
+    <p style="text-align: center; font-style: italic; margin-top: 2em;">End of IOS Quick-Start Kit</p>
+
+    <div class="footer">The Council of Selves | nunovalerio.com/book</div>
+</div>
+
+</body>
+</html>
