@@ -545,6 +545,60 @@
       font-size: 1.1rem;
     }
 
+    .form-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      padding: 1rem 2.5rem;
+      border-radius: 50px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: 0.3px;
+      background: linear-gradient(135deg, var(--cyan), #0097a7);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .form-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(0, 188, 212, 0.35);
+    }
+
+    .form-submit:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .form-error {
+      text-align: center;
+      padding: 1rem;
+      background: rgba(233, 30, 99, 0.08);
+      border: 1px solid var(--magenta);
+      border-radius: var(--radius-sm);
+      color: var(--magenta);
+      font-size: 0.9rem;
+    }
+
+    #signup-error, #signup-success { display: none; }
+    #kit-embed { position: absolute; left: -9999px; opacity: 0; pointer-events: none; }
+
+    /* Kit embed form overrides (fallback if custom form is hidden) */
+    .kit-fallback .formkit-form { margin: 0 !important; padding: 0 !important; background: transparent !important; border: none !important; width: 100% !important; }
+    .kit-fallback .formkit-fields { display: grid !important; grid-template-columns: 1fr auto !important; gap: 1rem !important; }
+    .kit-fallback .formkit-input { padding: 1rem 1.2rem !important; border-radius: 12px !important; border: 1px solid rgba(15,15,26,0.12) !important; background: #fff !important; font-family: 'Inter', sans-serif !important; font-size: 0.95rem !important; }
+    .kit-fallback .formkit-input:focus { border-color: #00bcd4 !important; box-shadow: 0 0 0 3px rgba(0,188,212,0.1) !important; }
+    .kit-fallback .formkit-submit { padding: 1rem 2rem !important; border-radius: 50px !important; font-family: 'Space Grotesk', sans-serif !important; font-weight: 600 !important; background: linear-gradient(135deg, #00bcd4, #0097a7) !important; color: #fff !important; border: none !important; cursor: pointer !important; }
+    .kit-fallback .formkit-submit:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 30px rgba(0,188,212,0.35) !important; }
+    .kit-fallback .formkit-powered-by-convertkit-container { opacity: 0.4; font-size: 0.7rem; margin-top: 0.5rem; }
+    @media (max-width: 700px) { .kit-fallback .formkit-fields { grid-template-columns: 1fr !important; } }
+
     /* ============================================
        ABOUT AUTHOR
        ============================================ */
@@ -799,7 +853,24 @@
           </ul>
         </div>
 
-        <script async data-uid="f4f5b99123" src="https://nuno-valerio.kit.com/f4f5b99123/index.js"></script>
+        <!-- Custom form (styled to match page) -->
+        <form id="ios-signup-form" class="signup-form">
+          <div class="form-row">
+            <input type="text" class="form-input" id="signup-name" name="first_name" placeholder="First name (optional)" autocomplete="given-name">
+            <input type="email" class="form-input" id="signup-email" name="email" placeholder="Your email address" required autocomplete="email">
+          </div>
+          <button type="submit" class="form-submit" id="signup-btn">Get the Free Kit</button>
+          <div id="signup-error" class="form-error"></div>
+        </form>
+        <div id="signup-success" class="form-success">
+          Check your inbox! Your IOS Quick-Start Kit is on its way.
+        </div>
+
+        <!-- Kit embed: hidden, provides subscription backend -->
+        <div id="kit-embed" aria-hidden="true">
+          <script async data-uid="f4f5b99123" src="https://nuno-valerio.kit.com/f4f5b99123/index.js"></script>
+        </div>
+
         <p class="privacy-note">No spam. One welcome email, then weekly insights. Unsubscribe anytime.</p>
       </div>
     </section>
@@ -827,7 +898,7 @@
       <div class="youtube-card reveal">
         <h3>Explore Leadership Through Story</h3>
         <p>Leaders of the Multiverse explores leadership lessons hidden in sci-fi, fantasy, and the stories that shaped us.</p>
-        <a href="https://www.youtube.com/@LeadersOfTheMultiverse" target="_blank" class="youtube-link">
+        <a href="https://www.youtube.com/@LeadersOfTheMultiverse" target="_blank" rel="noopener" class="youtube-link">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><path d="M9.545 15.568V8.432L15.818 12l-6.273 3.568z" fill="#000"/></svg>
           Subscribe on YouTube
         </a>
@@ -840,9 +911,9 @@
   <footer class="footer">
     <div class="footer-links">
       <a href="/">nunovalerio.com</a>
-      <a href="https://www.linkedin.com/in/nunovalerio/" target="_blank">LinkedIn</a>
-      <a href="https://www.youtube.com/@LeadersOfTheMultiverse" target="_blank">YouTube</a>
-      <a href="https://github.com/naharpt" target="_blank">GitHub</a>
+      <a href="https://www.linkedin.com/in/nunovalerio/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://www.youtube.com/@LeadersOfTheMultiverse" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://github.com/naharpt" target="_blank" rel="noopener">GitHub</a>
       <a href="mailto:nf.valerio@gmail.com">Email</a>
     </div>
     <p>Nuno Valério &middot; 2026</p>
@@ -885,7 +956,51 @@
       });
     });
 
-    /* Kit form is handled by the embedded script */
+    /* ============================================
+       KIT FORM SUBMISSION
+       ============================================ */
+    const signupForm = document.getElementById('ios-signup-form');
+    const signupBtn = document.getElementById('signup-btn');
+    const signupError = document.getElementById('signup-error');
+    const signupSuccess = document.getElementById('signup-success');
+
+    signupForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById('signup-email').value.trim();
+      const name = document.getElementById('signup-name').value.trim();
+
+      if (!email || !email.includes('@')) {
+        signupError.textContent = 'Please enter a valid email address.';
+        signupError.style.display = 'block';
+        return;
+      }
+
+      signupBtn.disabled = true;
+      signupBtn.textContent = 'Sending...';
+      signupError.style.display = 'none';
+
+      // Try Kit's hidden embed form
+      const kitEmail = document.querySelector('#kit-embed input[name="email_address"]');
+      if (kitEmail) {
+        kitEmail.value = email;
+        const kitName = document.querySelector('#kit-embed input[name="fields[first_name]"]');
+        if (kitName && name) kitName.value = name;
+        const kitBtn = document.querySelector('#kit-embed [data-element="submit"]');
+        if (kitBtn) {
+          kitBtn.click();
+          await new Promise(function(r) { setTimeout(r, 2000); });
+          signupForm.style.display = 'none';
+          signupSuccess.style.display = 'block';
+          return;
+        }
+      }
+
+      // Fallback: open Kit landing page
+      window.open('https://nuno-valerio.kit.com/f4f5b99123', '_blank');
+      signupBtn.disabled = false;
+      signupBtn.textContent = 'Get the Free Kit';
+    });
   </script>
 
 </body>
